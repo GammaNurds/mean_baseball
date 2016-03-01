@@ -8,6 +8,7 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
+    <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <!-- endbower -->
     <!-- endbuild -->
@@ -51,12 +52,13 @@
       <div ng-view=""></div>
     </div>
 
-
+    <!--
     <div class="footer">
       <div class="container">
         <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
       </div>
     </div>
+    -->
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
@@ -74,6 +76,7 @@
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
+        <script src="scripts/game_class.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/database.js"></script>
         <script src="scripts/controllers/about.js"></script>

@@ -1,1 +1,38 @@
-<span>MIN!</span>
+
+<div ng-init=""> <!-- maybe add .. startGame() -->
+  <!-- button area -->
+  <div>
+    <!-- disable buttons when $scope.isOver is not false -->
+  	<p><button type="button" class="btn btn-default btn-lg { disabled: isOver }" ng-click="onBallClick()">Ball</button></p>
+  	<p><button type="button" class="btn btn-default btn-lg" ng-click="onStrikeClick()">Strike</button></p>
+  	<p><button type="button" class="btn btn-default btn-lg" ng-click="onHitClick()">Hit</button></p>
+  	<p><button type="button" class="btn btn-default btn-lg" ng-click="onHomerunClick()">Homerun</button></p>
+  </div>
+
+
+
+  <!-- current game stats -->
+  <div class="panel scoreboard">
+    <h2>Scoreboard</h2>
+    <p>
+      <span class="scoreboard-label">At Bat</span><span class="scoreboard-letter">{{stats.at_bats}}</span> 
+      <span class="scoreboard-label">Ball</span><span class="scoreboard-letter">{{stats.balls}}</span> 
+      <span class="scoreboard-label">Strike</span><span class="scoreboard-letter">{{stats.strikes}}</span>
+      <span class="scoreboard-label">Pitcher</span><span class="scoreboard-player">{{stats.pitcher}}</span>
+    </p>
+
+    <div class="scoreboard-player">{{p2}}</div>
+    <span class="scoreboard-letter">{{stats.p2_points}}</span>
+
+    <div class="scoreboard-player">{{p1}}</div>
+    <span class="scoreboard-letter">{{stats.p1_points}}</span>
+
+  </div>
+</div>
+
+
+<!-- only shows when $scope.winner is not false -> this is set dynamically in controller -->
+<!-- ng-if also works -->
+<div ng-show="isOver">
+  <h1>GAME OVER!</h1>
+</div>

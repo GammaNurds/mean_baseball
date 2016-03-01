@@ -1,0 +1,21 @@
+
+<div ng-init="getPlayers()">
+    
+  <div class="panel panel-default" ng-repeat="player in players">
+    <img src="{{player.image_url}}" class="pull-left player-photo" />
+    <div class="panel-body panel-player" >
+      <ul class="player-info pull-left">
+        <li>Name: {{player.name}}</li>
+        <li>Games: {{player.games}}</li>
+        <li>Wins: {{player.wins}}</li>
+      </ul>
+      <!-- chart -->
+      <div class="pull-right">
+        <a href="#" class="thumbnail">
+          <img src="http://placehold.it/100x100" alt="">
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>

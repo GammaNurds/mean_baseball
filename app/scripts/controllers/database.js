@@ -1,5 +1,6 @@
 'use strict';
 
+var m = angular.module('baseballAngularApp');
 /**
  * @ngdoc function
  * @name baseballAngularApp.controller:MainCtrl
@@ -7,17 +8,27 @@
  * # MainCtrl
  * Controller of the baseballAngularApp
  */
-angular.module('baseballAngularApp')
-	.controller('DatabaseCtrl', [function ($scope, $http) {
+m.controller('DatabaseCtrl', function($scope, $http, $routeParams) {
+	console.log("DatabaseCtrl loaded...");
 
-		/**
-		 * get games using api
-		 */
-		/*$scope.getGames = function() {
-			$http.get("/api/games").success(function(response) {
-				$scope.games = response;
-	       	});
-		};*/
-		$scope.games = ["game1", "game2"];
-		
-	}]);
+	/**
+	 * get games using api
+	 */
+	$scope.getGames = function() {
+		$http.get("/api/games").success(function(response) {
+			$scope.games = response;
+       	});
+	};
+
+	/**
+	 * get games by ID using api
+	 */
+	$scope.getGame = function() {
+		var id = $routeParams.id;  // get id from url
+		console.log("getting game with ID: " + id);
+		$http.get("/api/games/" + id).success(function(response) {
+			$scope.game = response;
+       	});
+	};
+	
+});

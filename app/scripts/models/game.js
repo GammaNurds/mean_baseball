@@ -9,7 +9,8 @@ var gameSchema = new Schema({
     player1: { type: String, required: true },
     player2: { type: String, required: true },
     winner: String,
-    loser: String,
+    plays: Array,
+    //loser: String,
     updated_at: { type: Date, default: Date.now }
 });
 
@@ -52,8 +53,8 @@ module.exports.updateGame = function(id, game, callback) {
     var update = {
         player1: game.player1,
         player2: game.player2,
-        winner: game.winner,
-        loser: game.loser
+        winner: game.winner
+        //loser: game.loser
     };
     Game.findOneAndUpdate(query, update, callback);
 };

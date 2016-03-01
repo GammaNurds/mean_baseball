@@ -10,7 +10,7 @@ var playerSchema = new Schema({
     games: Number,
     wins: Number,
     losses: Number,
-    at_bats: Number,
+    image_url: String,
     //created_at: Date,
     updated_at: { type: Date, default: Date.now }
 });

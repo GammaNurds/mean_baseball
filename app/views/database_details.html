@@ -1,0 +1,27 @@
+
+<div ng-init="getGame()">
+
+  <!-- basic info -->
+  <div>{{game.player1}} vs {{game.player2}}</div>
+  <div>Winner: {{game.winner}}</div>
+
+  <h4>Plays</h4>
+	<table class="table table-condensed table-hover">
+  		<thead>
+  			<tr>
+  				<th>#</th>
+  				<th>Pitcher</th>
+  				<th>Batter</th>
+  				<th>Play</th>
+  			</tr>
+  		</thead>
+  		<tbody>
+  			<tr ng-repeat="play in game.plays">
+    			<td>{{ $index }}</td> 
+    			<td>{{ play.pitcher }}</td>
+    			<td>{{ play.batter }}</td>
+    			<td>{{ play.play }}</td>
+  			</tr>
+  		</tbody>
+	</table>
+</div>

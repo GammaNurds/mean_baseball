@@ -30,5 +30,14 @@ m.controller('DatabaseCtrl', function($scope, $http, $routeParams) {
 			$scope.game = response;
        	});
 	};
+
+	/**
+	 * remove game by ID when button "Delete" is clicked
+	 */ 
+	$scope.onDeleteClick = function(id) {
+		$http.delete("/api/games/" + id).success(function() {
+			window.location.href = "#/games";
+       	});
+	};
 	
 });

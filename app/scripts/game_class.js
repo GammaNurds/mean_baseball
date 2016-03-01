@@ -51,6 +51,7 @@ var GameClass = function(player1, player2) {
     var pitcher;
     var batter;
     var at_bat = 1;
+    var plays = [];
     
     this.init = function() {
         this.setPositions();    
@@ -102,7 +103,7 @@ var GameClass = function(player1, player2) {
             console.log("unknown action: " + play);
         }
 
-        //this.isOver();
+        this.savePlay(play);
     };
 
     this.isOver = function() {
@@ -114,6 +115,14 @@ var GameClass = function(player1, player2) {
             isOver = this.getBatter().getName();
         } 
         return isOver;
+    };
+
+    this.getWinnerName = function() {
+        if (this.getPitcher().getPoints() >= MAXPOINTS) {
+            return this.getPitcher().getName();
+        } else if (this.getBatter().getPoints() >= MAXPOINTS) {
+            return this.getBatter().getName();
+        } 
     };    
 
     this.getStats = function() {
@@ -125,6 +134,20 @@ var GameClass = function(player1, player2) {
             "balls": this.getPitcher().getBalls(),
             "strikes": this.getPitcher().getStrikes(),
             "at_bats": this.getAtBats()
+        };
+    };
+
+    /**
+     * see models/game.js for available game object  attributes
+     */ 
+    this.getResultAsJSON = function() {
+
+        var plays = this.getPlays();
+        return {
+            player1: player1.getName(),
+            player2: player2.getName(),
+            winner: this.getWinnerName(),
+            plays: plays
         };
     };
 
@@ -146,6 +169,19 @@ var GameClass = function(player1, player2) {
 
     this.getAtBats = function() {
         return at_bat;
+    };
+
+    this.savePlay = function(action) {
+        var play = {
+            pitcher: this.getPitcher().getName(),
+            batter: this.getBatter().getName(),
+            play: action
+        };
+        plays.push(play);
+    };
+
+    this.getPlays = function(play) {
+        return plays;
     };
 
     this.init(); // run init method

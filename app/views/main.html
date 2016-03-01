@@ -1,5 +1,26 @@
+<!-- select player area -->
+<div ng-show="!activeGame">
+  <p>
+    <h3>Player 1</h3>
+    <select class="form-control" ng-model="playerName1">
+      <option value="" disabled selected>Select player</option>
+      <option ng-repeat="player in players">{{player.name}}</option>
+    </select>
 
-<div ng-init=""> <!-- maybe add .. startGame() -->
+    <h3>Player 2</h3>
+    <select class="form-control" ng-model="playerName2">
+      <option value="" disabled selected>Select player</option>
+      <option ng-repeat="player in players">{{player.name}}</option>
+    </select>
+  </p>
+
+  <p>
+    <button type="button" class="btn btn-default btn-lg" ng-click="onStartGameClick()">Start Game</button>
+  </p>
+</div>
+
+<!-- game area -->
+<div ng-show="activeGame"> <!-- maybe add .. startGame() -->
   <!-- button area -->
   <div>
     <!-- disable buttons when $scope.isOver is not false -->
@@ -21,18 +42,29 @@
       <span class="scoreboard-label">Pitcher</span><span class="scoreboard-player">{{stats.pitcher}}</span>
     </p>
 
-    <div class="scoreboard-player">{{p2}}</div>
-    <span class="scoreboard-letter">{{stats.p2_points}}</span>
+    <div>
+      <span class="scoreboard-label">Guest</span><span class="scoreboard-player">{{p2}}</span>
+      <span class="scoreboard-letter">{{stats.p2_points}}</span>
+    </div>
 
-    <div class="scoreboard-player">{{p1}}</div>
-    <span class="scoreboard-letter">{{stats.p1_points}}</span>
-
+    <div>
+      <span class="scoreboard-label">Home</span><span class="scoreboard-player">{{p1}}</span>
+      <span class="scoreboard-letter">{{stats.p1_points}}</span>
+    </div>
   </div>
-</div>
 
 
-<!-- only shows when $scope.winner is not false -> this is set dynamically in controller -->
-<!-- ng-if also works -->
-<div ng-show="isOver">
-  <h1>GAME OVER!</h1>
+
+  <!-- only shows when $scope.winner is not false -> this is set dynamically in controller -->
+  <!-- ng-if also works -->
+  <div ng-show="isOver">
+    <h1>GAME OVER!</h1>
+    <strong>{{winner}}</strong> won!
+  </div>
+
+  <!--<div ng-show="success" class="alert alert-success alert-dismissible fade in" role="alert"> 
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>Success!</strong> You're looking good.
+  </div>-->
+
 </div>

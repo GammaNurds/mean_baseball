@@ -12,11 +12,11 @@
   		</thead>
   		<tbody>
   			<tr ng-repeat="game in games">
-    			<td>{{ $index }}</td> 
+    			<td>{{ $index + 1 }}</td> 
     			<td>{{ game.player1 }}</td>
     			<td>{{ game.player2 }}</td>
     			<td>{{ game.winner }}</td>
-          <td><a class="btn btn-default btn-sm" href="#/database/details/{{game._id}}" role="button">Details</a></td>
+          <td><a class="btn btn-default btn-sm" href="#/games/details/{{game._id}}" role="button">Details</a></td>
   			</tr>
   		</tbody>
 	</table>

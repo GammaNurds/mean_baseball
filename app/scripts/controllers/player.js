@@ -29,4 +29,11 @@ angular.module('baseballAngularApp')
 			$scope.player = response;
        	});
 	};
+
+	$scope.addPlayer = function() {
+		$http.post("/api/players/", $scope.player).success(function(response) {
+			window.location.href = "#/players";
+       	});
+	};
+
  });

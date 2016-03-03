@@ -46,93 +46,23 @@ angular.module('baseballAngularApp')
   			addPlay("homerun");
   		};
 
-  		// this function gets run on every play
-  		function addPlay(play) {
-  			game.addPlay(play);
-  			$scope.stats = game.getStats();  // update stats
-  			if (game.isOver()) {
-	  			console.log("game over!");
-	  			$scope.isOver = game.isOver();
-                $scope.winner = game.getWinnerName();
-	  			var JSON = game.getResultAsJSON();
-	  			//$scope.winner = result.winner;
+        /**
+         * set allSelected to true when all needed options are selected
+         */
+        $scope.checkSelection = function() {
+            $scope.allSelected = false;
+            if ($scope.playerName1 && $scope.playerName1 && $scope.gameMode) {
+                $scope.allSelected = true;
+            }
+        };
 
-	  			// send game to db
-                $http.post("/api/games", JSON).success(function(response) {
-		            console.log("success!");
-                    $scope.success = true;
-		        });
+        $scope.onStartGameClick = function() {
+            console.log("start game!");
+            $scope.activeGame = true;
+            player1 = new PlayerClass($scope.playerName1);
+            player2 = new PlayerClass($scope.playerName2);
 
-                // get player object by id 
-
-                // update player db
-                // add games, wins, losses, throws, strikes, ...
-                var name = player1.getName();
-                var strikes = player1.getAllStrikes();
-                var balls = player1.getAllBalls();
-
-                
-
-
-                var p1_JSON = p1Obj;
-                console.log(p1_JSON);
-                p1_JSON.games += 1;
-                p1_JSON.strikes = 999;
-                p1_JSON.balls = 999;
-                //p1_JSON.strikes += strikes;
-                //p1_JSON.balls += balls;
-
-                // check if p1 is winner or loser
-                if (p1_JSON.name === $scope.winner) {
-                    console.log("p1 is winner!");
-                    p1_JSON.wins += 1;
-                } else {
-                    p1_JSON.losses += 1;
-                }
-                console.log(p1_JSON);
-                
-
-                var p2_JSON = p2Obj;
-                console.log(p2_JSON);
-                p2_JSON.games += 1;
-                p2_JSON.strikes = 999;
-                p2_JSON.balls = 999;
-                //p2_JSON.strikes += strikes;
-                //p2_JSON.balls += balls;
-
-                // check if p2 is winner or loser
-                if (p2_JSON.name === $scope.winner) {
-                    console.log("p2 is winner");
-                    p2_JSON.wins += 1;
-                } else {
-                    p2_JSON.losses += 1;
-                }
-                console.log(p2_JSON);
-
-
-                // send p1
-                $http.put("/api/players/" + p1_JSON._id, p1_JSON).success(function(response) {
-                    console.log("success updating player1!");
-                });
-
-                // send p2
-                $http.put("/api/players/" + p2_JSON._id, p2_JSON).success(function(response) {
-                    console.log("success updating player2!");
-                });
-
-
-
-	  			// disable buttons
-	  		}
-  		}
-
-  		$scope.onStartGameClick = function() {
-  			console.log("start game!");
-  			$scope.activeGame = true;
-  			player1 = new PlayerClass($scope.playerName1);
-			player2 = new PlayerClass($scope.playerName2);
-
-			game = new GameClass(player1, player2);
+            game = new GameClass(player1, player2);
 
 
             p1Obj = getPlayerByName($scope.playerName1);  // this is used to append data and update in db
@@ -141,10 +71,85 @@ angular.module('baseballAngularApp')
             //console.log(p1Obj.name);
             //console.log(p2Obj.name);
 
-			$scope.p1 = player1.getName();
-			$scope.p2 = player2.getName();
-  			$scope.stats = game.getStats();
-  		};
+            $scope.p1 = player1.getName();
+            $scope.p2 = player2.getName();
+            $scope.stats = game.getStats();
+        };
+
+  		// this function gets run on every play
+  		function addPlay(play) {
+  			game.addPlay(play);
+  			$scope.stats = game.getStats();  // update stats
+  			if (game.isOver()) {
+	  			console.log("game over!");
+	  			$scope.isOver = game.isOver();
+                $scope.winner = game.getWinnerName();
+
+                if ($scope.gameMode === "Ranked Match") {
+                    saveToDatabase();   
+                }
+                // dont send results for practice games
+	  		}
+  		}
+
+        function saveToDatabase() {
+
+            var JSON = game.getResultAsJSON();
+            var winner = game.getWinnerName();
+            var at_bats = game.getAtBats() - 1;
+
+            // send game to db
+            $http.post("/api/games", JSON).success(function(response) {
+                console.log("posting game successfull!");
+                $scope.success = true;
+            });
+
+            // update player db
+
+            p1Obj.strikes += player1.getAllStrikes();
+            p1Obj.balls += player1.getAllBalls();
+            p1Obj.hits += player1.getHits();
+            p1Obj.homeruns += player1.getHomeruns();
+            p1Obj.at_bats += at_bats;
+            console.log("p1 walks before: " +  p1Obj.walks);
+            p1Obj.walks += player1.getWalks();
+            console.log("p1 walks after: " +  p1Obj.walks);
+
+
+            // check if p1 is winner or loser
+            if (p1Obj.name === winner) {
+                console.log("p1 is winner!");
+                p1Obj.wins += 1;
+            } else {
+                p1Obj.losses += 1;
+            }
+
+            p2Obj.strikes += player2.getAllStrikes();
+            p2Obj.balls += player2.getAllBalls();
+            p2Obj.hits += player2.getHits();
+            p2Obj.homeruns += player2.getHomeruns();
+            p2Obj.at_bats += at_bats;
+            p2Obj.walks += player2.getWalks();
+            console.log("p2 walks: " + player2.getWalks());
+
+            // check if p2 is winner or loser
+            if (p2Obj.name === winner) {
+                p2Obj.wins += 1;
+            } else {
+                p2Obj.losses += 1;
+            }
+
+
+            // send p1
+            $http.put("/api/players/" + p1Obj._id, p1Obj).success(function(response) {
+                console.log("success updating player1!");
+            });
+
+            // send p2
+            $http.put("/api/players/" + p2Obj._id, p2Obj).success(function(response) {
+                console.log("success updating player2!");
+            });
+        }
 
         function getPlayerByName(name) {
             var playerObj;
@@ -155,4 +160,5 @@ angular.module('baseballAngularApp')
             }
             return playerObj;
         }
+
 	});

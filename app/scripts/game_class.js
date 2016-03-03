@@ -1,11 +1,16 @@
 'use strict';
 
 var PlayerClass = function(name) {
+    var points = 0;
+
     var strikes = 0;
     var balls = 0;
-    var points = 0;
     var allStrikes = 0;
     var allBalls = 0;
+
+    var hits = 0;
+    var homeruns = 0;
+    var walks = 0;
 
     this.getName = function() {
         return name;
@@ -58,6 +63,30 @@ var PlayerClass = function(name) {
     this.addAllBalls = function(number) {
         allBalls += number;
     };
+
+    this.getHits = function() {
+        return hits;
+    };
+
+    this.addHit = function() {
+        hits += 1;
+    };
+
+    this.getHomeruns = function() {
+        return homeruns;
+    };
+
+    this.addHomerun = function() {
+        homeruns += 1;
+    };
+
+    this.getWalks = function() {
+        return walks;
+    };
+
+    this.addWalk = function() {
+        walks += 1;
+    };
 };
 
 var GameClass = function(player1, player2) {
@@ -68,7 +97,7 @@ var GameClass = function(player1, player2) {
     // better than this. becauase this.pitcer would be accessible from outside
     var pitcher;
     var batter;
-    var at_bat = 1;
+    var at_bat = 0;
     var plays = [];
     
     this.init = function() {
@@ -76,6 +105,7 @@ var GameClass = function(player1, player2) {
     };
 
     this.setPositions = function() {
+        at_bat += 1;
         
         var oldPitcher = this.getPitcher();
         var oldBatter = this.getBatter();
@@ -94,15 +124,12 @@ var GameClass = function(player1, player2) {
             // switch positions
             this.setPitcher(oldBatter);
             this.setBatter(oldPitcher);
-            at_bat += 1;
-
 
         // new game
         } else { // on init, make player1 pitcher first
             this.setPitcher(player1);
             this.setBatter(player2);
         }
-
     };
 
     this.addPlay = function(play) {
@@ -117,15 +144,20 @@ var GameClass = function(player1, player2) {
             this.getPitcher().addBall();
             // walk
             if (this.getPitcher().getBalls() >= MAXBALLS) {
+                this.getBatter().addWalk();
                 this.getBatter().addPoints(1);
                 this.setPositions();
             }
         
         } else if (play === "hit") {
+            this.getBatter().addHit();
+            console.log(this.getBatter().getHits());
             this.getBatter().addPoints(1);
             this.setPositions();
 
         } else if (play === "homerun") {
+            this.getBatter().addHomerun();
+            console.log(this.getBatter().getHomeruns());
             this.getBatter().addPoints(2);
             this.setPositions();
         } else {

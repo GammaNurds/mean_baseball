@@ -6,18 +6,26 @@
     <div class="panel-body panel-player" >
       <ul class="player-info pull-left">
         <li>Name: {{player.name}}</li>
-        <li>Games: {{player.games}}</li>
+        <li>Games played: {{player.games}}</li>
         <li>Win%: {{player.win_perc}}</li>
+        <li>Throws: {{player.throws}}</li>
+        <li>Strike%: {{player.strike_perc}}</li>
+        <li>At Bats: {{player.at_bats}}</li>
+        <li>Hit%: {{player.hit_perc}}</li>
+        <li>Walks: {{player.walks}}</li>
+        <li>Base%: {{player.base_perc}}</li>
         <li><a href="#" ng-click="onDeleteClick(player._id)">Delete</a><li>
       </ul>
 
-      <!-- chart -->
-      <!--<div class="pull-right">
-        <a href="#" class="thumbnail">
-          <img src="http://placehold.it/100x100" alt="">
-        </a>
-      </div>-->
+      <div ng-init="createChartData()" class="pull-right"> 
+        <canvas class="chart chart-radar"
+          chart-data="data[$index]" chart-labels="labels" chart-colours="colours[$index]">
+        </canvas> 
+      </div> 
+
     </div>
-  </div>
+  </div> <!-- end repeat -->
+  
   <a class="btn btn-default btn" href="#/players/add" role="button">Add Player</a>
+
 </div>

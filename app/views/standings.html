@@ -1,7 +1,7 @@
 
 <div class="hero-unit" ng-init="getPlayers()">
   <h3>Season 1</h3>
-	<table class="table">
+	<table class="table table-condensed">
   		<thead>
   			<tr>
           <th>Rank</th>
@@ -23,4 +23,76 @@
   			</tr>
   		</tbody>
 	</table>
+
+  <h3>Top 3 Pitchers</h3>
+  <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Throws</th>
+          <th>Strikes</th>
+          <th>Balls</th>
+          <th>Strike%</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="player in players | orderBy:'strike_perc':true | limitTo:3">
+          <td>{{ $index + 1 }}</td>
+          <td>{{ player.name }}</td>
+          <td>{{ player.throws }}</td>
+          <td>{{ player.strikes }}</td>
+          <td>{{ player.balls }}</td>
+          <td>{{ player.strike_perc }}</td>
+        </tr>
+      </tbody>
+  </table>
+
+  <h3>Top 3 Hitters</h3>
+  <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>At Bats</th>
+          <th>Hits</th>
+          <th>Homeruns</th>
+          <th>Hit%</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="player in players | orderBy:'hit_perc':true | limitTo:3">
+          <td>{{ $index + 1 }}</td>
+          <td>{{ player.name }}</td>
+          <td>{{ player.at_bats }}</td>
+          <td>{{ player.hits }}</td>
+          <td>{{ player.homeruns }}</td>
+          <td>{{ player.hit_perc }}</td>
+        </tr>
+      </tbody>
+  </table>
+
+  <h3>Top 3 Scorers</h3>
+  <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>At Bats</th>
+          <th>Hits/Homeruns</th>
+          <th>Walks</th>
+          <th>Base%</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="player in players | orderBy:'base_perc':true | limitTo:3">
+          <td>{{ $index + 1 }}</td>
+          <td>{{ player.name }}</td>
+          <td>{{ player.at_bats }}</td>
+          <td>{{ player.hits + player.homeruns }}</td>
+          <td>{{ player.walks }}</td>
+          <td>{{ player.base_perc }}</td>
+        </tr>
+      </tbody>
+  </table>
 </div>

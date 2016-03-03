@@ -1,6 +1,6 @@
 {
   "name": "baseballangular",
-  "private": true,
+  "main": "server.js",
   "devDependencies": {
     "autoprefixer-core": "^5.2.1",
     "grunt": "^0.4.5",

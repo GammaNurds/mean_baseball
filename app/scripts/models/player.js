@@ -12,8 +12,18 @@ var playerSchema = new Schema({
     losses: Number,
     image_url: String,
     win_perc: Number,
+    
+    throws: Number,
     strikes: Number,
     balls: Number,
+    strike_perc: Number,
+
+    at_bats: Number,
+    hits: Number,
+    homeruns: Number,
+    hit_perc: Number,
+    walks: Number,
+    base_perc: Number,
     //created_at: Date,
     updated_at: { type: Date, default: Date.now }
 });
@@ -47,7 +57,24 @@ module.exports.addPlayer = function(player, callback) {
 
 module.exports.calcPlayerFields = function(id) {
     Player.findById(id, function(err, player) {
+        // winning percentage
         player.win_perc = Math.round(player.wins / player.games * 100) / 100;
+        
+        // games played
+        player.games = player.wins + player.losses;
+        
+        // throws made
+        player.throws = player.strikes + player.balls;
+
+        // strike percentage
+        player.strike_perc = Math.round(player.strikes / player.throws * 100) / 100;
+
+        // hit + homerun percentage
+        player.hit_perc = Math.round((player.hits + player.homeruns) / player.at_bats * 100) / 100;
+
+        // hit + homerun + walks percentage
+        player.base_perc = Math.round((player.hits + player.homeruns + player.walks) / player.at_bats * 100) / 100;
+
         player.save();
     });
 };
@@ -63,11 +90,13 @@ module.exports.updatePlayer = function(id, player, callback) {
     // but this way I can only apply selected attributes and ignore others
     var update = {
         name: player.name,
-        games: player.games,
         wins: player.wins,
         losses: player.losses,
         strikes: player.strikes,
         balls: player.balls,
+        hits: player.hits,
+        homeruns: player.homeruns,
+        walks: player.walks,
         at_bats: player.at_bats
     };
     Player.findOneAndUpdate(query, update, callback);

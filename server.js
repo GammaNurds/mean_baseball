@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 // mongoose + mongoose schemas
 var mongoose = require('mongoose');
 //mongoose.connect('mongodb://localhost/baseballdb');
-
+mongoose.connect("mongodb://admin:root@ds019678.mlab.com:19678/heroku_5d24197s");
 
 var Player = require('./app/scripts/models/player');
 var Game = require('./app/scripts/models/game');

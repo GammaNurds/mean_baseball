@@ -11,7 +11,9 @@ app.use(bodyParser.json());
 
 // mongoose + mongoose schemas
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/baseballdb');
+//mongoose.connect('mongodb://localhost/baseballdb');
+
+
 var Player = require('./app/scripts/models/player');
 var Game = require('./app/scripts/models/game');
 

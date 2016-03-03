@@ -95,4 +95,24 @@
         </tr>
       </tbody>
   </table>
+
+  <h3>Top 3 Trash Talker</h3>
+  <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Games</th>
+          <th>Losses</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="player in players | orderBy:'win_perc':false | limitTo:3">
+          <td>{{ $index + 1 }}</td>
+          <td>{{ player.name }}</td>
+          <td>{{ player.games }}</td>
+          <td>{{ player.losses }}</td>
+        </tr>
+      </tbody>
+  </table>
 </div>

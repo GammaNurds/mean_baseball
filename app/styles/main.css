@@ -1,4 +1,5 @@
 /* include font for scoreboard letters */
+* {font-family: "Comic Sans MS" !important;}
 @import url('https://fonts.googleapis.com/css?family=Orbitron');
 
 .browsehappy {
@@ -32,6 +33,8 @@ body {
   line-height: 40px;
   padding-bottom: 19px;
 }
+
+h3 {margin-top: 50px;}
 
 /* Custom page footer */
 .footer {

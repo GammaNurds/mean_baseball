@@ -100,7 +100,7 @@ angular.module('baseballAngularApp')
 			var batting = $scope.players[key].hit_perc * 100;
 			var success = $scope.players[key].win_perc * 100;
 			var defense = 50;
-			var trashTalk = 50;
+			var trashTalk = 100 - ($scope.players[key].win_perc * 100);
 			$scope.data.push([[pitching, concentration, batting, success, defense, trashTalk]]);
 		}
 	}

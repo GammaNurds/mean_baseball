@@ -7,14 +7,16 @@
       <ul class="player-info pull-left">
         <li>Name: {{player.name}}</li>
         <li>Games: {{player.games}}</li>
-        <li>Wins: {{player.wins}}</li>
+        <li>Win%: {{player.win_perc}}</li>
+        <li><a href="#" ng-click="onDeleteClick(player._id)">Delete</a><li>
       </ul>
+
       <!-- chart -->
-      <div class="pull-right">
+      <!--<div class="pull-right">
         <a href="#" class="thumbnail">
           <img src="http://placehold.it/100x100" alt="">
         </a>
-      </div>
+      </div>-->
     </div>
   </div>
   <a class="btn btn-default btn" href="#/players/add" role="button">Add Player</a>

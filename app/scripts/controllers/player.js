@@ -8,17 +8,15 @@
  * Controller of the baseballAngularApp
  */
 angular.module('baseballAngularApp')
-  .controller('PlayerCtrl', function ($scope, $http, $routeParams) {
+  .controller('PlayerCtrl', function ($scope, $http, $routeParams, $PlayersService) {
   	console.log("PlayerCtrl loaded...");
-    
-    /**
-	 * get players using api
-	 */
-	$scope.getPlayers = function() {
-		$http.get("/api/players").success(function(response) {
+
+    //$scope.players = $PlayersService.players;
+    $scope.getPlayers = function() {
+    	$http.get("/api/players/").success(function(response) {
 			$scope.players = response;
-       	});
-	};
+		});
+    };
 
 	/**
 	 * get player by ID using api
@@ -31,7 +29,20 @@ angular.module('baseballAngularApp')
 	};
 
 	$scope.addPlayer = function() {
+		if (!$scope.player.image_url) {
+			console.log("no image - assign batman!");
+			$scope.player.image_url = "http://31.media.tumblr.com/tumblr_kwhtgyYpgd1qzscuuo1_400.jpg";
+		}
 		$http.post("/api/players/", $scope.player).success(function(response) {
+			window.location.href = "#/players";
+       	});
+	};
+
+	/**
+	 * remove game by ID when button "Delete" is clicked
+	 */ 
+	$scope.onDeleteClick = function(id) {
+		$http.delete("/api/players/" + id).success(function() {
 			window.location.href = "#/players";
        	});
 	};

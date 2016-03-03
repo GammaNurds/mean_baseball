@@ -4,6 +4,8 @@ var PlayerClass = function(name) {
     var strikes = 0;
     var balls = 0;
     var points = 0;
+    var allStrikes = 0;
+    var allBalls = 0;
 
     this.getName = function() {
         return name;
@@ -40,6 +42,22 @@ var PlayerClass = function(name) {
     this.addPoints = function(number) {
         points += number;
     };
+
+    this.getAllStrikes = function() {
+        return allStrikes;
+    };
+
+    this.getAllBalls = function() {
+        return allBalls;
+    };
+
+    this.addAllStrikes = function(number) {
+        allStrikes += number;
+    };
+
+    this.addAllBalls = function(number) {
+        allBalls += number;
+    };
 };
 
 var GameClass = function(player1, player2) {
@@ -58,22 +76,33 @@ var GameClass = function(player1, player2) {
     };
 
     this.setPositions = function() {
+        
         var oldPitcher = this.getPitcher();
         var oldBatter = this.getBatter();
+
         // new at-bat
         if (oldPitcher && oldBatter) { // if already set, switch positions
+
+            // save balls and strikes for stats
+            this.getPitcher().addAllStrikes(this.getPitcher().getStrikes());
+            this.getPitcher().addAllBalls(this.getPitcher().getBalls());
+            
+            // set pitcher's balls and strikes to zero
+            this.getPitcher().setBalls(0);
+            this.getPitcher().setStrikes(0);
+        
+            // switch positions
             this.setPitcher(oldBatter);
             this.setBatter(oldPitcher);
             at_bat += 1;
+
+
         // new game
         } else { // on init, make player1 pitcher first
             this.setPitcher(player1);
             this.setBatter(player2);
         }
 
-        // set pitcher's balls and strikes to zero
-        this.getPitcher().setBalls(0);
-        this.getPitcher().setStrikes(0);
     };
 
     this.addPlay = function(play) {

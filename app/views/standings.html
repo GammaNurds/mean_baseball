@@ -1,0 +1,26 @@
+
+<div class="hero-unit" ng-init="getPlayers()">
+  <h3>Season 1</h3>
+	<table class="table">
+  		<thead>
+  			<tr>
+          <th>Rank</th>
+  				<th>Name</th>
+  				<th>Games</th>
+  				<th>Wins</th>
+  				<th>Losses</th>
+          <th>Win%</th>
+  			</tr>
+  		</thead>
+  		<tbody>
+  			<tr ng-repeat="player in players | orderBy:'wins':true">
+          <td>{{ $index + 1 }}</td>
+    			<td>{{ player.name }}</td>
+    			<td>{{ player.games }}</td>
+    			<td>{{ player.wins }}</td>
+          <td>{{ player.losses }}</td>
+		      <td>{{ player.win_perc }}</td>
+  			</tr>
+  		</tbody>
+	</table>
+</div>

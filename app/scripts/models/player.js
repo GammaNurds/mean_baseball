@@ -11,6 +11,9 @@ var playerSchema = new Schema({
     wins: Number,
     losses: Number,
     image_url: String,
+    win_perc: Number,
+    strikes: Number,
+    balls: Number,
     //created_at: Date,
     updated_at: { type: Date, default: Date.now }
 });
@@ -42,6 +45,13 @@ module.exports.addPlayer = function(player, callback) {
     Player.create(player, callback);
 };
 
+module.exports.calcPlayerFields = function(id) {
+    Player.findById(id, function(err, player) {
+        player.win_perc = Math.round(player.wins / player.games * 100) / 100;
+        player.save();
+    });
+};
+
 module.exports.updatePlayer = function(id, player, callback) {
     // builds a query object with id=providedID, could also be name=specificname
     var query = {
@@ -56,6 +66,8 @@ module.exports.updatePlayer = function(id, player, callback) {
         games: player.games,
         wins: player.wins,
         losses: player.losses,
+        strikes: player.strikes,
+        balls: player.balls,
         at_bats: player.at_bats
     };
     Player.findOneAndUpdate(query, update, callback);

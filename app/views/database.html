@@ -8,6 +8,7 @@
   				<th>Player 1</th>
   				<th>Player 2</th>
   				<th>Winner</th>
+          <th>Updated</th>
   			</tr>
   		</thead>
   		<tbody>
@@ -16,6 +17,7 @@
     			<td>{{ game.player1 }}</td>
     			<td>{{ game.player2 }}</td>
     			<td>{{ game.winner }}</td>
+          <td>{{ game.updated_at }}</td>
           <td><a class="btn btn-default btn-sm" href="#/games/details/{{game._id}}" role="button">Details</a></td>
   			</tr>
   		</tbody>

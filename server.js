@@ -36,9 +36,9 @@ app.disable('x-powered-by');
  * DELETE /tickets/12 - Deletes ticket #12
  */
 
-app.get('/', function (req, res) {
+/*app.get('/', function (req, res) {
     res.send('use /api/players');
-});
+});*/
 
 // players API
 app.get('/api/players', function (req, res) {

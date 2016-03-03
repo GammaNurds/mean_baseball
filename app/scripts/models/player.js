@@ -7,23 +7,24 @@ var Schema = mongoose.Schema;
 // create a schema
 var playerSchema = new Schema({
     name: { type: String, required: true, unique: true },
-    games: Number,
-    wins: Number,
-    losses: Number,
-    image_url: String,
-    win_perc: Number,
-    
-    throws: Number,
-    strikes: Number,
-    balls: Number,
-    strike_perc: Number,
+    image_url: { type: String },
 
-    at_bats: Number,
-    hits: Number,
-    homeruns: Number,
-    hit_perc: Number,
-    walks: Number,
-    base_perc: Number,
+    games: { type: Number, default: 0 },
+    wins: { type: Number, default: 0 },
+    losses: { type: Number, default: 0 },
+    at_bats: { type: Number, default: 0 },
+    hits: { type: Number, default: 0 },
+    homeruns: { type: Number, default: 0 },
+    walks: { type: Number, default: 0 },
+    throws: { type: Number, default: 0 },
+    strikes: { type: Number, default: 0 },
+    balls: { type: Number, default: 0 },
+
+    strike_perc: { type: Number },
+    win_perc: { type: Number },
+    base_perc: { type: Number },
+    hit_perc: { type: Number },
+    
     //created_at: Date,
     updated_at: { type: Date, default: Date.now }
 });
@@ -58,7 +59,7 @@ module.exports.addPlayer = function(player, callback) {
 module.exports.calcPlayerFields = function(id) {
     Player.findById(id, function(err, player) {
         // winning percentage
-        player.win_perc = Math.round(player.wins / player.games * 100) / 100;
+        player.win_perc = (player.wins / player.games * 100) / 100;
         
         // games played
         player.games = player.wins + player.losses;
@@ -67,13 +68,13 @@ module.exports.calcPlayerFields = function(id) {
         player.throws = player.strikes + player.balls;
 
         // strike percentage
-        player.strike_perc = Math.round(player.strikes / player.throws * 100) / 100;
+        player.strike_perc = (player.strikes / player.throws * 100) / 100;
 
         // hit + homerun percentage
-        player.hit_perc = Math.round((player.hits + player.homeruns) / player.at_bats * 100) / 100;
+        player.hit_perc = ((player.hits + player.homeruns) / player.at_bats * 100) / 100;
 
         // hit + homerun + walks percentage
-        player.base_perc = Math.round((player.hits + player.homeruns + player.walks) / player.at_bats * 100) / 100;
+        player.base_perc = ((player.hits + player.homeruns + player.walks) / player.at_bats * 100) / 100;
 
         player.save();
     });

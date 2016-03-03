@@ -18,6 +18,53 @@ angular.module('baseballAngularApp')
         var p1Obj;
         var p2Obj;
 
+        function updatePlayer(player, gamePlayer, winnerName) {
+            player.strikes += gamePlayer.getAllStrikes();
+            player.balls += gamePlayer.getAllBalls();
+            player.hits += gamePlayer.getHits();
+            player.homeruns += gamePlayer.getHomeruns();
+            player.at_bats += gamePlayer.getAtBats();
+            player.walks += gamePlayer.getWalks();
+            
+            // check if p1 is winner or loser
+            if (player.name === winnerName) {
+                player.wins += 1;
+            } else {
+                player.losses += 1;
+            }
+
+            // send p1
+            $http.put("/api/players/" + player._id, player).success(function() {
+                console.log("success updating player");
+            });
+        }
+
+        function saveToDatabase() {
+
+            var JSON = game.getResultAsJSON();
+            var winner = game.getWinnerName();
+            var at_bats = game.getAtBats();
+
+            // send game to db
+            $http.post("/api/games", JSON).success(function(response) {
+                console.log("posting game successfull!");
+                $scope.success = true;
+            });
+
+            updatePlayer(p1Obj, player1, winner);
+            updatePlayer(p2Obj, player2, winner);
+        }
+
+        function getPlayerByName(name) {
+            var playerObj;
+            for (var key in $scope.players) {
+                if ($scope.players[key].name === name) {
+                    playerObj = $scope.players[key];
+                }
+            }
+            return playerObj;
+        }
+
   		//$scope.winner = game.isOver();
         //$scope.players = $PlayersService.players;
         $scope.getPlayers = function() {
@@ -85,115 +132,9 @@ angular.module('baseballAngularApp')
 	  			$scope.isOver = game.isOver();
                 $scope.winner = game.getWinnerName();
                 saveToDatabase();   
-
-                // dont send results for practice games
 	  		}
   		}
 
-        function saveToDatabase() {
-
-            var JSON = game.getResultAsJSON();
-            var winner = game.getWinnerName();
-            var at_bats = game.getAtBats() - 1;
-            console.log(JSON);
-            // send game to db
-            $http.post("/api/games", JSON).success(function(response) {
-                console.log("posting game successfull!");
-                $scope.success = true;
-            });
-
-            // update player db
-            if (p1Obj.strikes) {
-                p1Obj.strikes += player1.getAllStrikes();
-            } else {
-                p1Obj.strikes = player1.getAllStrikes();
-            }
-
-            if (p1Obj.balls) {
-                p1Obj.balls += player1.getAllBalls();
-            } else {
-                p1Obj.balls = player1.getAllBalls();
-            }
-
-            if (p1Obj.hits) {
-                p1Obj.hits += player1.getHits();
-            } else {
-                p1Obj.hits = player1.getHits();
-            }
-
-            if (p1Obj.homeruns) {
-                p1Obj.homeruns += player1.getHomeruns();
-            } else {
-                p1Obj.homeruns = player1.getHomeruns();
-            }
-
-            if (p1Obj.at_bats) {
-                p1Obj.at_bats += at_bats;
-            } else {
-                p1Obj.at_bats = at_bats;
-            }
-
-            if (p1Obj.walks) {
-                p1Obj.walks += player1.getWalks();
-            } else {
-                p1Obj.walks = player1.getWalks();
-            }
-            
-
-
-            // check if p1 is winner or loser
-            if (p1Obj.name === winner) {
-                console.log("p1 is winner!");
-                if (p1Obj.wins) {
-                    p1Obj.wins += 1;
-                } else {
-                    p1Obj.wins = 1;
-                }
-                
-            } else {
-                if (p1Obj.losses) {
-                    p1Obj.losses += 1;
-                } else {
-                    p1Obj.losses = 1;
-                }
-            }
-
-            p2Obj.strikes += player2.getAllStrikes();
-            p2Obj.balls += player2.getAllBalls();
-            p2Obj.hits += player2.getHits();
-            p2Obj.homeruns += player2.getHomeruns();
-            p2Obj.at_bats += at_bats;
-            p2Obj.walks += player2.getWalks();
-            console.log("p2 walks: " + player2.getWalks());
-
-            // check if p2 is winner or loser
-            if (p2Obj.name === winner) {
-                p2Obj.wins += 1;
-            } else {
-                p2Obj.losses += 1;
-            }
-
-            console.log(p1Obj);
-            console.log(p2Obj);
-            // send p1
-            $http.put("/api/players/" + p1Obj._id, p1Obj).success(function(response) {
-                console.log("success updating player1!");
-            });
-
-            // send p2
-            $http.put("/api/players/" + p2Obj._id, p2Obj).success(function(response) {
-                console.log("success updating player2!");
-            });
-        }
-
-        function getPlayerByName(name) {
-            var playerObj;
-            for (var key in $scope.players) {
-                if ($scope.players[key].name === name) {
-                    playerObj = $scope.players[key];
-                }
-            }
-            return playerObj;
-        }
+        
 
 	});

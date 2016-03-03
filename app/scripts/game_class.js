@@ -12,6 +12,8 @@ var PlayerClass = function(name) {
     var homeruns = 0;
     var walks = 0;
 
+    var at_bats = 0; 
+
     this.getName = function() {
         return name;
     };
@@ -87,6 +89,15 @@ var PlayerClass = function(name) {
     this.addWalk = function() {
         walks += 1;
     };
+
+    this.getAtBats = function() {
+        return at_bats;
+    };
+
+    this.addAtBat = function() {
+        at_bats += 1;
+        console.log(this.getName() + " has ABS: " + this.getAtBats());
+    };
 };
 
 var GameClass = function(player1, player2) {
@@ -97,7 +108,7 @@ var GameClass = function(player1, player2) {
     // better than this. becauase this.pitcer would be accessible from outside
     var pitcher;
     var batter;
-    var at_bat = 0;
+    var at_bat = 1;
     var plays = [];
     
     this.init = function() {
@@ -105,13 +116,13 @@ var GameClass = function(player1, player2) {
     };
 
     this.setPositions = function() {
-        at_bat += 1;
         
         var oldPitcher = this.getPitcher();
         var oldBatter = this.getBatter();
 
         // new at-bat
         if (oldPitcher && oldBatter) { // if already set, switch positions
+            //console.log(this.getBatter().getName() + " has " + this.getBatter().getAtBats() + " at-bats!");
 
             // save balls and strikes for stats
             this.getPitcher().addAllStrikes(this.getPitcher().getStrikes());
@@ -133,11 +144,14 @@ var GameClass = function(player1, player2) {
     };
 
     this.addPlay = function(play) {
+        var newAtBat = false;
+
         if (play === "strike") {
             this.getPitcher().addStrike();
             // strikeout
             if (this.getPitcher().getStrikes() >= MAXSTRIKES) {
-                this.setPositions();
+                //this.setPositions();
+                newAtBat = true;
             }
         
         } else if (play === "ball") {
@@ -146,22 +160,33 @@ var GameClass = function(player1, player2) {
             if (this.getPitcher().getBalls() >= MAXBALLS) {
                 this.getBatter().addWalk();
                 this.getBatter().addPoints(1);
-                this.setPositions();
+                //this.setPositions();
+                newAtBat = true;
             }
         
         } else if (play === "hit") {
             this.getBatter().addHit();
-            console.log(this.getBatter().getHits());
             this.getBatter().addPoints(1);
-            this.setPositions();
+            //this.setPositions();
+            newAtBat = true;
 
         } else if (play === "homerun") {
             this.getBatter().addHomerun();
-            console.log(this.getBatter().getHomeruns());
             this.getBatter().addPoints(2);
-            this.setPositions();
+            //this.setPositions();
+            newAtBat = true;
         } else {
             console.log("unknown action: " + play);
+        }
+
+        // switch positions on new at bat
+        // but only if game is not over
+        if (newAtBat) {
+            this.getBatter().addAtBat();
+            if (!this.isOver()) {
+                at_bat += 1;
+                this.setPositions();
+            }
         }
 
         this.savePlay(play);

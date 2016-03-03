@@ -40,8 +40,8 @@ angular
                 templateUrl: './views/add_player.html',
                 controller: 'PlayerCtrl'
             })
-            .when('/players/details/:id', {
-                templateUrl: './views/players_details.html',
+            .when('/players/edit/:id', {
+                templateUrl: './views/edit_player.html',
                 controller: 'PlayerCtrl'
             })
             .when('/standings', {

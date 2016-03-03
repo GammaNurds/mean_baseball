@@ -12,15 +12,17 @@ app.use(bodyParser.json());
 // mongoose + mongoose schemas
 var mongoose = require('mongoose');
 //mongoose.connect('mongodb://localhost/baseballdb');
-mongoose.connect("mongodb://admin:root@ds019678.mlab.com:19678/heroku_5d24197s");
-/*mongoose.connect(process.env.MONGOLAB_URI, function(err) {
+
+//export MONGOLAB_URI="mongodb://admin:root@ds019678.mlab.com:19678/heroku_5d24197s"
+//mongoose.connect("mongodb://admin:root@ds019678.mlab.com:19678/heroku_5d24197s");
+mongoose.connect(process.env.MONGOLAB_URI, function(err) {
     if (err) {
         console.log("couldn't connect to mongodb!");
         console.log(err);
     } else {
         console.log("connected to mongodb successfull!");
     }
-});*/
+});
 
 var Player = require('./app/scripts/models/player');
 var Game = require('./app/scripts/models/game');
@@ -46,6 +48,7 @@ app.get('/api/players', function (req, res) {
         if (err) {
             throw err;
         }
+        Player.calcPlayerFields();
         res.json(players);
     });
 });
@@ -66,7 +69,7 @@ app.post('/api/players', function (req, res) {
         if (err) {
             throw err;
         }
-        Player.calcPlayerFields(player.id);  // calc stats when created and updated
+        //Player.calcPlayerFields(player.id);  // calc stats when created and updated
         res.json(player);
     });
 });

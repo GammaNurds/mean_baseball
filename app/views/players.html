@@ -14,7 +14,9 @@
         <li>Hit%: {{player.hit_perc}}</li>
         <li>Walks: {{player.walks}}</li>
         <li>Base%: {{player.base_perc}}</li>
-        <!--<li><a href="#" ng-click="onDeleteClick(player._id)">Delete</a><li>-->
+        <li><a href="#/players/edit/{{player._id}}">Edit</a></li>
+        <li><a href="#" ng-click="onDeleteClick(player._id)">Delete</a><li>
+
       </ul>
 
       <div ng-init="createChartData()" class="pull-right"> 

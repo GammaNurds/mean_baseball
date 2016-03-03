@@ -84,10 +84,8 @@ angular.module('baseballAngularApp')
 	  			console.log("game over!");
 	  			$scope.isOver = game.isOver();
                 $scope.winner = game.getWinnerName();
+                saveToDatabase();   
 
-                if ($scope.gameMode === "Ranked Match") {
-                    saveToDatabase();   
-                }
                 // dont send results for practice games
 	  		}
   		}

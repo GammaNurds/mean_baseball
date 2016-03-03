@@ -13,6 +13,14 @@ app.use(bodyParser.json());
 var mongoose = require('mongoose');
 //mongoose.connect('mongodb://localhost/baseballdb');
 mongoose.connect("mongodb://admin:root@ds019678.mlab.com:19678/heroku_5d24197s");
+/*mongoose.connect(process.env.MONGOLAB_URI, function(err) {
+    if (err) {
+        console.log("couldn't connect to mongodb!");
+        console.log(err);
+    } else {
+        console.log("connected to mongodb successfull!");
+    }
+});*/
 
 var Player = require('./app/scripts/models/player');
 var Game = require('./app/scripts/models/game');

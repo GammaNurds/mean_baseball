@@ -46,7 +46,7 @@ app.get('/api/players', function (req, res) {
         if (err) {
             throw err;
         }
-        Player.calcPlayerFields();
+        //Player.calcPlayerFields();
         res.json(players);
     });
 });
@@ -67,7 +67,7 @@ app.post('/api/players', function (req, res) {
         if (err) {
             throw err;
         }
-        //Player.calcPlayerFields(player.id);  // calc stats when created and updated
+        Player.calcFieldsForPlayer(player._id);  // calc stats when created and updated
         res.json(player);
     });
 });
@@ -79,7 +79,7 @@ app.put('/api/players/:id', function (req, res) {
         if (err) {
             throw err;
         }
-        Player.calcPlayerFields(player.id);  // calc stats when created and updated
+        Player.calcFieldsForPlayer(player._id);  // calc stats when created and updated
         res.json(player);
     });
 });

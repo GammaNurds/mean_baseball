@@ -23,7 +23,11 @@ angular
             .when('/', {
                 templateUrl: './views/main.html',  // put everthing in here to start
                 controller: 'MainCtrl'
-              })
+            })
+            .when('/gameover', {
+                templateUrl: './views/gameover.html',
+                controller: 'MainCtrl'
+            })
             .when('/games', {
                 templateUrl: './views/database.html',
                 controller: 'DatabaseCtrl'

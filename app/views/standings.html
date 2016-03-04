@@ -24,7 +24,7 @@
   		</tbody>
 	</table>
 
-  <h3>Top 3 Pitchers</h3>
+  <h3>Top 5 Pitchers</h3>
   <table class="table table-condensed">
       <thead>
         <tr>
@@ -37,7 +37,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="player in players | orderBy:'strike_perc':true | limitTo:3">
+        <tr ng-repeat="player in players | orderBy:'strike_perc':true | limitTo:5">
           <td>{{ $index + 1 }}</td>
           <td>{{ player.name }}</td>
           <td>{{ player.throws }}</td>
@@ -48,7 +48,7 @@
       </tbody>
   </table>
 
-  <h3>Top 3 Hitters</h3>
+  <h3>Top 5 Hitters</h3>
   <table class="table table-condensed">
       <thead>
         <tr>
@@ -61,7 +61,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="player in players | orderBy:'hit_perc':true | limitTo:3">
+        <tr ng-repeat="player in players | orderBy:'hit_perc':true | limitTo:5">
           <td>{{ $index + 1 }}</td>
           <td>{{ player.name }}</td>
           <td>{{ player.at_bats }}</td>
@@ -72,7 +72,7 @@
       </tbody>
   </table>
 
-  <h3>Top 3 Scorers</h3>
+  <h3>Top 5 Scorers</h3>
   <table class="table table-condensed">
       <thead>
         <tr>
@@ -85,7 +85,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="player in players | orderBy:'base_perc':true | limitTo:3">
+        <tr ng-repeat="player in players | orderBy:'base_perc':true | limitTo:5">
           <td>{{ $index + 1 }}</td>
           <td>{{ player.name }}</td>
           <td>{{ player.at_bats }}</td>
@@ -96,7 +96,7 @@
       </tbody>
   </table>
 
-  <h3>Top 3 Trash Talker</h3>
+  <h3>Top 5 Trash Talker</h3>
   <table class="table table-condensed">
       <thead>
         <tr>
@@ -107,7 +107,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="player in players | orderBy:'win_perc':false | limitTo:3">
+        <tr ng-repeat="player in players | orderBy:'win_perc':false | limitTo:5">
           <td>{{ $index + 1 }}</td>
           <td>{{ player.name }}</td>
           <td>{{ player.games }}</td>

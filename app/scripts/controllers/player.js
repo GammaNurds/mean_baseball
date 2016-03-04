@@ -23,11 +23,9 @@ angular.module('baseballAngularApp')
 	 * get player by ID using api
 	 */
 	$scope.getPlayer = function() {
-		console.log("load player!");
 		var id = $routeParams.id;  // get id from url
 		$http.get("/api/players/" + id).success(function(response) {
 			$scope.player = response;
-			console.log(player);
        	});
 	};
 
@@ -41,7 +39,10 @@ angular.module('baseballAngularApp')
 	};
 
 	$scope.updatePlayer = function() {
-		$http.put("/api/players/" + $scope.player._id, $scope.player._id, $scope.player).success(function(response) {
+		if (!$scope.player.image_url) {
+			$scope.player.image_url = "http://31.media.tumblr.com/tumblr_kwhtgyYpgd1qzscuuo1_400.jpg";
+		}
+		$http.put("/api/players/" + $scope.player._id, $scope.player).success(function() {
 			window.location.href = "#/players";
        	});
 	};

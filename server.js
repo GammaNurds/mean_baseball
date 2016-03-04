@@ -2,6 +2,7 @@
 
 var express = require('express');
 var app = express();
+var port = process.env.PORT || 3000;
 
 // middleware
 app.use(express.static(__dirname + '/app'));
@@ -12,9 +13,6 @@ app.use(bodyParser.json());
 // mongoose + mongoose schemas
 var mongoose = require('mongoose');
 //mongoose.connect('mongodb://localhost/baseballdb');
-
-//export MONGOLAB_URI="mongodb://admin:root@ds019678.mlab.com:19678/heroku_5d24197s"
-//mongoose.connect("mongodb://admin:root@ds019678.mlab.com:19678/heroku_5d24197s");
 mongoose.connect(process.env.MONGOLAB_URI, function(err) {
     if (err) {
         console.log("couldn't connect to mongodb!");
@@ -147,6 +145,6 @@ app.delete('/api/games/:id', function (req, res) {
     });
 });
 
-app.listen(process.env.PORT || 3000, function () {
-    console.log('Example app listening on port 3000!');
+app.listen(port, function () {
+    console.log('Server listening on port ' + port + "!");
 });

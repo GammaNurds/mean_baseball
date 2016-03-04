@@ -89,16 +89,21 @@ module.exports.calcPlayerFields = function() {
 };
 
 module.exports.updatePlayer = function(id, player, callback) {
+    console.log("updating player " + player.name + " at ID: " + id);
     // builds a query object with id=providedID, could also be name=specificname
     var query = {
         _id: id
         //name: "specificName"
     };
+
     // build an updated player object out of the provided object in parameters
     // could also just use the parameter object directly (var update = player;)
     // but this way I can only apply selected attributes and ignore others
+    // but: "ALL ATTRIBUTES IN UPDATE HAVE TO BE ASSIGNED IN THE JSON, IT CANNOT BE UNDEFINED"
     var update = {
         name: player.name,
+        nickname: player.nickname,
+        image_url: player.image_url,
         wins: player.wins,
         losses: player.losses,
         strikes: player.strikes,
@@ -108,6 +113,7 @@ module.exports.updatePlayer = function(id, player, callback) {
         walks: player.walks,
         at_bats: player.at_bats
     };
+
     Player.findOneAndUpdate(query, update, callback);
 };
 

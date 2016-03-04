@@ -20,11 +20,13 @@ var playerSchema = new Schema({
     throws: { type: Number, default: 0 },
     strikes: { type: Number, default: 0 },
     balls: { type: Number, default: 0 },
+    defense_plays: { type: Number, default: 0 },
 
     strike_perc: { type: Number, default: 0 },
     win_perc: { type: Number, default: 0},
     base_perc: { type: Number, default: 0},
     hit_perc: { type: Number, default: 0 },
+    def_per_game: { type: Number, default: 0 },
     
     //created_at: Date,
     updated_at: { type: Date, default: Date.now }
@@ -57,7 +59,7 @@ module.exports.addPlayer = function(player, callback) {
     Player.create(player, callback);
 };
 
-module.exports.calcPlayerFields = function() {
+/*module.exports.calcPlayerFields = function() {
     Player.find(function(err, players) {
         for (var key in players) {
             var player = players[key];
@@ -82,11 +84,14 @@ module.exports.calcPlayerFields = function() {
             // hit + homerun + walks percentage
             player.base_perc = Math.round((player.hits + player.homeruns + player.walks) / player.at_bats * 100) / 100;
 
+            // defensive plays per game
+            player.def_per_game = Math.round((player.defense_plays / player.games * 100) / 100;
+
             player.save();
         }
     });
     
-};
+};*/
 
 module.exports.calcFieldsForPlayer = function(id) {
     console.log("looking for player with id: " + id);
@@ -111,6 +116,9 @@ module.exports.calcFieldsForPlayer = function(id) {
 
         // hit + homerun + walks percentage
         player.base_perc = Math.round((player.hits + player.homeruns + player.walks) / player.at_bats * 100) / 100;
+
+        // defensive plays per game
+        player.def_per_game = Math.round(player.defense_plays / player.games * 100) / 100;
 
         player.save();
 
@@ -141,7 +149,8 @@ module.exports.updatePlayer = function(id, player, callback) {
         hits: player.hits,
         homeruns: player.homeruns,
         walks: player.walks,
-        at_bats: player.at_bats
+        at_bats: player.at_bats,
+        defense_plays: player.defense_plays
     };
 
     Player.findOneAndUpdate(query, update, callback);

@@ -72,7 +72,7 @@
       </tbody>
   </table>
 
-  <h3>Top 5 Scorers</h3>
+  <h3>Top 5 Offense Players</h3>
   <table class="table table-condensed">
       <thead>
         <tr>
@@ -92,6 +92,28 @@
           <td>{{ player.hits + player.homeruns }}</td>
           <td>{{ player.walks }}</td>
           <td>{{ player.base_perc }}</td>
+        </tr>
+      </tbody>
+  </table>
+
+  <h3>Top 5 Defense Players</h3>
+  <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Games</th>
+          <th>Defense Plays</th>
+          <th>DPs per Game</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="player in players | orderBy:'def_per_game':true | limitTo:5">
+          <td>{{ $index + 1 }}</td>
+          <td>{{ player.name }}</td>
+          <td>{{ player.games }}</td>
+          <td>{{ player.defense_plays }}</td>
+          <td>{{ player.def_per_game }}</td>
         </tr>
       </tbody>
   </table>

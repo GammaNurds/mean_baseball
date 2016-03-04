@@ -9,6 +9,22 @@
  */
 angular.module('baseballAngularApp')
 	.controller('MainCtrl', function ($scope, $http, $routeParams) {
+
+
+        console.log("trying to play sound!");
+        /*var sound = new Howl({
+            src: ['.../sounds/homerun3.mp3'],
+            autoplay: true,
+            loop: true,
+            onend: function() {
+                console.log('Finished!');
+            }
+        });
+        console.log(sound);
+        sound.play();
+
+        playSound("strike");
+        */
 		
 		$scope.activeGame = false;
 		var player1;
@@ -25,6 +41,7 @@ angular.module('baseballAngularApp')
             player.homeruns += gamePlayer.getHomeruns();
             player.at_bats += gamePlayer.getAtBats();
             player.walks += gamePlayer.getWalks();
+            player.defense_plays += gamePlayer.getDefensePlays();
             
             // check if p1 is winner or loser
             if (player.name === winnerName) {
@@ -32,7 +49,7 @@ angular.module('baseballAngularApp')
             } else {
                 player.losses += 1;
             }
-
+            console.log(player);
             // send p1
             $http.put("/api/players/" + player._id, player).success(function() {
                 console.log("success updating player");
@@ -43,7 +60,7 @@ angular.module('baseballAngularApp')
 
             var JSON = game.getResultAsJSON();
             var winner = game.getWinnerName();
-            var at_bats = game.getAtBats();
+            //var at_bats = game.getAtBats();
 
             // send game to db
             $http.post("/api/games", JSON).success(function(response) {
@@ -71,6 +88,8 @@ angular.module('baseballAngularApp')
             $http.get("/api/players/").success(function(response) {
                 $scope.players = response;
             });
+
+            
         };
 
   		// handler for ball button
@@ -82,6 +101,11 @@ angular.module('baseballAngularApp')
   		$scope.onStrikeClick = function() {
   			addPlay("strike");
   		};
+
+        // handler for defense button
+        $scope.onDefensePlayClick = function() {
+            addPlay("defensePlay");
+        };
 
   		// handler for ball button
   		$scope.onHitClick = function() {
@@ -123,18 +147,21 @@ angular.module('baseballAngularApp')
             $scope.stats = game.getStats();
         };
 
+        $scope.getWinner = function() {
+            $scope.winner = game.getWinnerName();
+        };
+
   		// this function gets run on every play
   		function addPlay(play) {
   			game.addPlay(play);
   			$scope.stats = game.getStats();  // update stats
   			if (game.isOver()) {
 	  			console.log("game over!");
+                //playSound("win");
 	  			$scope.isOver = game.isOver();
                 $scope.winner = game.getWinnerName();
-                saveToDatabase();   
+                saveToDatabase();
+                window.location.href = "#/gameover"; 
 	  		}
   		}
-
-        
-
 	});

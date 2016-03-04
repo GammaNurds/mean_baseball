@@ -11,6 +11,7 @@ var PlayerClass = function(name) {
     var hits = 0;
     var homeruns = 0;
     var walks = 0;
+    var defense_plays = 0;
 
     var at_bats = 0; 
 
@@ -98,6 +99,14 @@ var PlayerClass = function(name) {
         at_bats += 1;
         console.log(this.getName() + " has ABS: " + this.getAtBats());
     };
+
+    this.addDefensePlay = function() {
+        defense_plays += 1;
+    };
+
+    this.getDefensePlays = function() {
+        return defense_plays;
+    };
 };
 
 var GameClass = function(player1, player2) {
@@ -147,6 +156,7 @@ var GameClass = function(player1, player2) {
         var newAtBat = false;
 
         if (play === "strike") {
+            playSound("strike");
             this.getPitcher().addStrike();
             // strikeout
             if (this.getPitcher().getStrikes() >= MAXSTRIKES) {
@@ -154,7 +164,17 @@ var GameClass = function(player1, player2) {
                 newAtBat = true;
             }
         
+        } else if (play === "defensePlay") {
+            this.getPitcher().addStrike();
+            this.getPitcher().addDefensePlay();
+            // strikeout
+            if (this.getPitcher().getStrikes() >= MAXSTRIKES) {
+                //this.setPositions();
+                newAtBat = true;
+            }
+        
         } else if (play === "ball") {
+            //playSound("strike");
             this.getPitcher().addBall();
             // walk
             if (this.getPitcher().getBalls() >= MAXBALLS) {
@@ -165,12 +185,14 @@ var GameClass = function(player1, player2) {
             }
         
         } else if (play === "hit") {
+            playSound("hit");
             this.getBatter().addHit();
             this.getBatter().addPoints(1);
             //this.setPositions();
             newAtBat = true;
 
         } else if (play === "homerun") {
+            playSound("homerun");
             this.getBatter().addHomerun();
             this.getBatter().addPoints(2);
             //this.setPositions();

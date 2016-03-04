@@ -88,8 +88,38 @@ module.exports.calcPlayerFields = function() {
     
 };
 
+module.exports.calcFieldsForPlayer = function(id) {
+    console.log("looking for player with id: " + id);
+    Player.findById(id, function(err, player) {
+        
+        console.log("calc stats for player: " + player.name);
+    
+        // games played
+        player.games = player.wins + player.losses;  // 0 on first
+
+        // winning percentage
+        player.win_perc = Math.round(player.wins / player.games * 100) / 100;
+        
+        // throws made
+        player.throws = player.strikes + player.balls;
+
+        // strike percentage
+        player.strike_perc = Math.round(player.strikes / player.throws * 100) / 100;
+
+        // hit + homerun percentage
+        player.hit_perc = Math.round((player.hits + player.homeruns) / player.at_bats * 100) / 100;
+
+        // hit + homerun + walks percentage
+        player.base_perc = Math.round((player.hits + player.homeruns + player.walks) / player.at_bats * 100) / 100;
+
+        player.save();
+
+    });
+    
+};
+
 module.exports.updatePlayer = function(id, player, callback) {
-    console.log("updating player " + player.name + " at ID: " + id);
+    //console.log("updating player " + player.name + " at ID: " + id);
     // builds a query object with id=providedID, could also be name=specificname
     var query = {
         _id: id

@@ -33,7 +33,9 @@
   <div>
     <!-- disable buttons when $scope.isOver is not false -->
   	<p><button type="button" class="btn btn-default btn-lg { disabled: isOver }" ng-click="onBallClick()">Ball</button></p>
-  	<p><button type="button" class="btn btn-default btn-lg" ng-click="onStrikeClick()">Strike</button></p>
+    <p><button type="button" class="btn btn-default btn-lg" ng-click="onStrikeClick()">Strike</button></p>
+  	<p><button type="button" class="btn btn-default btn-lg" ng-click="">
+      Defensive Play</button></p>
   	<p><button type="button" class="btn btn-default btn-lg" ng-click="onHitClick()">Hit</button></p>
   	<p><button type="button" class="btn btn-default btn-lg" ng-click="onHomerunClick()">Homerun</button></p>
   </div>
@@ -42,7 +44,7 @@
 
   <!-- current game stats -->
   <div class="panel scoreboard">
-    <h2>Scoreboard</h2>
+
 
     <span class="scoreboard-label">Pitcher</span>
     <span class="scoreboard-letter scoreboard-player">{{stats.pitcher}}</span>
@@ -58,13 +60,13 @@
     
     <!--<span class="scoreboard-label">Guest</span>-->
     <span class="scoreboard-player scoreboard-label">{{p2}}</span>
-    <span class="scoreboard-letter">{{stats.p2_points}}</span>
+    <span class="scoreboard-letter right">{{stats.p2_points}}</span>
     
 
     
     <!--<span class="scoreboard-label">Home</span>-->
     <span class="scoreboard-player scoreboard-label">{{p1}}</span>
-    <span class="scoreboard-letter">{{stats.p1_points}}</span>
+    <span class="scoreboard-letter right">{{stats.p1_points}}</span>
     
   </div>
 

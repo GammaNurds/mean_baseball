@@ -2,6 +2,9 @@
 *{font-family: 'Sarpanch', sans-serif;}
 @import url('https://fonts.googleapis.com/css?family=Orbitron');
 
+.bold {font-weight: bold; font-size: 20px; text-transform: uppercase;}
+.italics {font-style: italic; letter-spacing: 0.02em; color: gray; margin-bottom: 10px;}
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -9,9 +12,11 @@
   padding: 0.2em 0;
 }
 
+.nav li {float: left; margin-right: 0px;}
+
 body {
   padding: 0;
-  background: red;
+  background: #f8f8f8;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -25,7 +30,12 @@ body {
 /* Custom page header */
 .header {
   border-bottom: 1px solid #e5e5e5;
-  margin-bottom: 10px;
+  margin-bottom: 0;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  height: 50px;
+  background: white;
 }
 /* Make the masthead heading the same height as the navigation */
 .header h3 {
@@ -61,6 +71,7 @@ h3 {margin-top: 50px;}
 .btn-lg {
   width: 100%;
   max-width: 400px;
+  margin-top: 4px;
 }
 
 /* Supporting marketing content */
@@ -72,12 +83,17 @@ h3 {margin-top: 50px;}
 }
 
 img.player-photo {
-  height: 150px;
+  max-width: 100%;
+  height: auto;
 }
 
 ul.player-info {
   list-style: none;
 }
+
+.navbar {margin-bottom: 0;}
+
+.right {float: right !important;}
 
 .scoreboard {
   background-color: black;
@@ -86,7 +102,8 @@ ul.player-info {
   overflow: hidden;
   display: block;
   padding: 10px;
-  width: calc(100% - 10px * 2);
+  width: 100%;
+  margin-bottom: 30px;
 }
 
 .scoreboard-label {

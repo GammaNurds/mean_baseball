@@ -2,11 +2,11 @@
 <div ng-init="getPlayers()">
     
   <div class="panel panel-default" ng-repeat="player in players">
-    <img src="{{player.image_url}}" class="pull-left player-photo" />
+    <img src="{{player.image_url}}" width="100" height="200" class="pull-left player-photo" />
     <div class="panel-body panel-player" >
       <ul class="player-info pull-left">
-        <li>Name: {{player.name}}</li>
-        <li>Nickname: {{player.nickname}}</li>
+        <li class="bold">{{player.name}}</li>
+        <li class="italics">{{player.nickname}}</li>
         <li>Games played: {{player.games}}</li>
         <li>Win%: {{player.win_perc}}</li>
         <li>Throws: {{player.throws}}</li>

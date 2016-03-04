@@ -1,5 +1,5 @@
 /* include font for scoreboard letters */
-* {font-family: "Comic Sans MS" !important;}
+*{font-family: 'Sarpanch', sans-serif;}
 @import url('https://fonts.googleapis.com/css?family=Orbitron');
 
 .browsehappy {
@@ -11,6 +11,7 @@
 
 body {
   padding: 0;
+  background: red;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -57,6 +58,11 @@ h3 {margin-top: 50px;}
   padding: 14px 24px;
 }
 
+.btn-lg {
+  width: 100%;
+  max-width: 400px;
+}
+
 /* Supporting marketing content */
 .marketing {
   margin: 40px 0;
@@ -74,14 +80,22 @@ ul.player-info {
 }
 
 .scoreboard {
-  background-color: #02437B;
+  background-color: black;
   color: white;
+  float: left;
+  overflow: hidden;
+  display: block;
+  padding: 10px;
+  width: calc(100% - 10px * 2);
 }
 
 .scoreboard-label {
   font-size: 17px;
   font-weight: bold;
   text-transform: uppercase;
+  float: left;
+  clear: both;
+  width: 100px;
 }
 
 .scoreboard-letter {
@@ -93,18 +107,15 @@ ul.player-info {
   padding: 5px;
   border-style: solid;
   border-color: white white;
+  float: left;
+  width: 50px;
+  text-align: center;
 }
 
 .scoreboard-player {
-  font-family: 'Orbitron', sans-serif;
-  background-color: black;
-  color: red;
-  margin: 5px;
-  font-size: 25px;
-  padding: 5px;
+  
   width: 150px;
-  border-style: solid;
-  border-color: white white;
+  
 }
 
 /* Responsive: Portrait tablets and up */

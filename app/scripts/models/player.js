@@ -27,6 +27,7 @@ var playerSchema = new Schema({
     base_perc: { type: Number, default: 0},
     hit_perc: { type: Number, default: 0 },
     def_per_game: { type: Number, default: 0 },
+    pts_per_atbat: { type: Number, default: 0 },
     
     //created_at: Date,
     updated_at: { type: Date, default: Date.now }
@@ -119,6 +120,9 @@ module.exports.calcFieldsForPlayer = function(id) {
 
         // defensive plays per game
         player.def_per_game = Math.round(player.defense_plays / player.games * 100) / 100;
+
+        // points per at-bat
+        player.pts_per_atbat = Math.round((player.hits + (player.homeruns * 2) + player.walks) / player.at_bats * 100) / 100;
 
         player.save();
 

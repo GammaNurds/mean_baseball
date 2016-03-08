@@ -1,6 +1,6 @@
 <!-- select player area -->
 <div ng-init="getPlayers()" ng-show="!activeGame">
-  <p>
+  <p ng-init="playIntro()">
     <h3>Player 1</h3>
     <select class="form-control" ng-model="playerName1">
       <option value="" disabled selected>Select player</option>

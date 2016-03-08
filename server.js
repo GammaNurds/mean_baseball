@@ -12,8 +12,9 @@ app.use(bodyParser.json());
 
 // mongoose + mongoose schemas
 var mongoose = require('mongoose');
-//mongoose.connect('mongodb://localhost/baseballdb');
-mongoose.connect(process.env.MONGOLAB_URI, function(err) {
+//export MONGOLAB_URI="mongodb://admin:root@ds019678.mlab.com:19678/heroku_5d24197s"
+var db = "mongodb://admin:root@ds019678.mlab.com:19678/heroku_5d24197s";
+mongoose.connect(db, function(err) {
     if (err) {
         console.log("couldn't connect to mongodb!");
         console.log(err);

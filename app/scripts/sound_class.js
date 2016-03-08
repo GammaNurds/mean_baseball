@@ -1,4 +1,4 @@
-console.log("...loading sounds");
+"use strict";
 
 var soundFolder = "../sounds/";
 var introSounds = ['intro.mp3'];
@@ -8,7 +8,7 @@ var strikeSounds = ["strike1.mp3", "strike2.mp3", "strike3.mp3", "strike4.mp3", 
 var hitSounds = ['neeiiin.mp3', 'fangen.mp3', 'na toll nicht mal die vorlage.mp3'];
 
 var homerunSounds = ["homerun.mp3", "homerun2.mp3", "homerun3.mp3", "homerun4.mp3"];
-var heavyHomerunSounds = ["walkoffhomerun1.mp3", "walkoffhomerun1.mp3"];
+//var heavyHomerunSounds = ["walkoffhomerun1.mp3", "walkoffhomerun1.mp3"];
 
 var winSounds = ["respekt.mp3", "jagutgewonnen.wav"];
 //var strikeoutSounds
@@ -36,6 +36,7 @@ function playSound(action) {
 	// play random track
 	var randomNumber = Math.floor(Math.random() * currentSounds.length);
 	var selectedTrack = soundFolder + currentSounds[randomNumber];
+	Howler.mobileAutoEnable = true;
 	var sound = new Howl({
 		urls: [selectedTrack],
 		volume: 1.0,

@@ -88,8 +88,6 @@ angular.module('baseballAngularApp')
             $http.get("/api/players/").success(function(response) {
                 $scope.players = response;
             });
-
-            
         };
 
   		// handler for ball button
@@ -151,6 +149,9 @@ angular.module('baseballAngularApp')
             $scope.winner = game.getWinnerName();
         };
 
+        $scope.playIntro = function() {
+            playSound("intro");
+        };
   		// this function gets run on every play
   		function addPlay(play) {
   			game.addPlay(play);

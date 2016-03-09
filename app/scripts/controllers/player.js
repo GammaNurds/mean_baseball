@@ -26,6 +26,8 @@ angular.module('baseballAngularApp')
 		var id = $routeParams.id;  // get id from url
 		$http.get("/api/players/" + id).success(function(response) {
 			$scope.player = response;
+			$scope.player = appendCategories($scope.player);
+			//console.log($scope.player);
        	});
 	};
 
@@ -39,6 +41,9 @@ angular.module('baseballAngularApp')
 	};
 
 	$scope.updatePlayer = function() {
+		// remove label
+		$scope.player.nickname = $scope.player.nickname.split(" ---")[0];
+
 		if (!$scope.player.image_url) {
 			$scope.player.image_url = "http://31.media.tumblr.com/tumblr_kwhtgyYpgd1qzscuuo1_400.jpg";
 		}
@@ -112,6 +117,31 @@ angular.module('baseballAngularApp')
 			var trashTalk = 100 - ($scope.players[key].win_perc * 100);
 			$scope.data.push([[pitching, concentration, batting, success, defense, trashTalk]]);
 		}
+	}
+
+	function appendCategories(player) {
+		player.hasWinnerNames = false;
+		player.hasBatterNames = false;
+		player.hasPitcherNames = false;
+		player.hasDefenderNames = false;
+		player.hasUltimateNames = false;
+
+		for (var key in player.nicknames) {
+			var nickname = player.nicknames[key];
+			if (nickname.category === "winner") {
+				player.hasWinnerNames = true;
+			} else if (nickname.category === "batter") {
+				player.hasBatterNames = true;
+			} else if (nickname.category === "pitcher") {
+				player.hasPitcherNames = true;
+			} else if (nickname.category === "defender") {
+				player.hasDefenderNames = true;
+			} else if (nickname.category === "ultimate") {
+				player.hasUltimateNames = true;
+			}
+		}
+
+		return player;
 	}
  });
 /*

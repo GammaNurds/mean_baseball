@@ -4,10 +4,77 @@
     <label>Name</label>
     <input type="text" class="form-control" ng-model="player.name" disabled>
   </div>
-  <div class="form-group">
+  
+  <!--<div class="form-group">
     <label>Nickname</label>
     <input type="text" class="form-control" ng-model="player.nickname">
+  </div>-->
+
+  <div class="form-group">
+    <label>Nickname</label>
+    <!--<select class="form-control" ng-model="player.nickname">
+      <option ng-repeat="nickname in player.nicknames">
+        {{nickname.name}}{{nickname.label}}
+      </option>
+    </select>-->
+
+    <select class="form-control" ng-model="player.nickname">
+      
+      <optgroup label="Default">
+        <!--<option ng-style = "{'background':'blue'}">-->
+        <option ng-repeat="nickname in player.nicknames | filter: { category: 'default' }">
+          {{nickname.name}}{{nickname.label}}
+        </option>
+      </optgroup>
+      
+      <optgroup ng-show="player.hasWinnerNames" label="Winner">
+        <!--<option ng-style = "{'background':'blue'}">-->
+        <option ng-repeat="nickname in player.nicknames | filter: { category: 'winner' }">
+          {{nickname.name}}{{nickname.label}}
+        </option>
+      </optgroup>
+
+      <optgroup ng-show="player.hasPitcherNames" label="Pitcher">
+        <!--<option ng-style = "{'background':'blue'}">-->
+        <option ng-repeat="nickname in player.nicknames | filter: { category: 'pitcher' }">
+          {{nickname.name}}{{nickname.label}}
+        </option>
+      </optgroup>
+
+      <optgroup ng-show="player.hasBatterNames" label="Batter">
+        <!--<option ng-style = "{'background':'blue'}">-->
+        <option ng-repeat="nickname in player.nicknames | filter: { category: 'batter' }">
+          {{nickname.name}}{{nickname.label}}
+        </option>
+      </optgroup>
+    
+      <optgroup ng-show="player.hasDefenderNames" label="Defender">
+        <!--<option ng-style = "{'background':'blue'}">-->
+        <option ng-repeat="nickname in player.nicknames | filter: { category: 'defender' }">
+          {{nickname.name}}{{nickname.label}}
+        </option>
+      </optgroup>
+
+      <optgroup ng-show="player.hasUltimateNames" label="Ultimate">
+        <!--<option ng-style = "{'background':'blue'}">-->
+        <option ng-repeat="nickname in player.nicknames | filter: { category: 'ultimate' }">
+          {{nickname.name}}
+        </option>
+      </optgroup>
+
+    </select>
   </div>
+  <p>Unlock nicknames by playing better/more!</p>
+
+
+  
+
+ <!--<div class="form-group">
+    <label>Nickname</label>
+  <select ng-model="player.nicknam" ng-options="nickname.name for nickname in player.nicknames"></select>
+</div>-->
+
+
   <div class="form-group">
     <label>Image URL</label>
     <input type="text" class="form-control" ng-model="player.image_url">

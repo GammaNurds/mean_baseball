@@ -42,6 +42,7 @@ angular.module('baseballAngularApp')
             player.at_bats += gamePlayer.getAtBats();
             player.walks += gamePlayer.getWalks();
             player.defense_plays += gamePlayer.getDefensePlays();
+            player.strikeouts += gamePlayer.getStrikeouts();
             
             // check if p1 is winner or loser
             if (player.name === winnerName) {

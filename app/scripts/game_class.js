@@ -11,6 +11,7 @@ var PlayerClass = function(name) {
     var hits = 0;
     var homeruns = 0;
     var walks = 0;
+    var strikeouts = 0;
     var defense_plays = 0;
 
     var at_bats = 0; 
@@ -107,6 +108,14 @@ var PlayerClass = function(name) {
     this.getDefensePlays = function() {
         return defense_plays;
     };
+
+    this.addStrikeout = function() {
+        strikeouts += 1;
+    };
+
+    this.getStrikeouts = function() {
+        return strikeouts;
+    };
 };
 
 var GameClass = function(player1, player2) {
@@ -154,6 +163,7 @@ var GameClass = function(player1, player2) {
 
     this.addPlay = function(play) {
         var newAtBat = false;
+        this.savePlay(play);
 
         if (play === "strike") {
             playSound("strike");
@@ -161,6 +171,7 @@ var GameClass = function(player1, player2) {
             // strikeout
             if (this.getPitcher().getStrikes() >= MAXSTRIKES) {
                 //this.setPositions();
+                this.getPitcher().addStrikeout();
                 newAtBat = true;
             }
         
@@ -210,8 +221,6 @@ var GameClass = function(player1, player2) {
                 this.setPositions();
             }
         }
-
-        this.savePlay(play);
     };
 
     this.isOver = function() {
@@ -283,7 +292,8 @@ var GameClass = function(player1, player2) {
         var play = {
             pitcher: this.getPitcher().getName(),
             batter: this.getBatter().getName(),
-            play: action
+            play: action,
+            at_bat: this.getAtBats()
         };
         plays.push(play);
     };

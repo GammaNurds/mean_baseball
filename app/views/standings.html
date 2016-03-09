@@ -13,9 +13,9 @@
   			</tr>
   		</thead>
   		<tbody>
-  			<tr ng-repeat="player in players | orderBy:'win_perc':true">
+  			<tr ng-repeat="player in players | orderBy:['-wins', '-win_perc']">
           <td>{{ $index + 1 }}</td>
-    			<td>{{ player.name }}</td>
+    			<td>{{ player.name }} <span ng-show="player.nickname">"{{ player.nickname }}"</span></td>
     			<td>{{ player.games }}</td>
     			<td>{{ player.wins }}</td>
           <td>{{ player.losses }}</td>
@@ -33,16 +33,18 @@
           <th>Throws</th>
           <th>Strikes</th>
           <th>Balls</th>
-          <th>Strike%</th>
+          <th>Strikeouts</th>
+          <th>Strike% (Accuracy)</th>
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="player in players | orderBy:'strike_perc':true | limitTo:5">
+        <tr ng-repeat="player in players | orderBy:['-strikeouts', '-strike_perc'] | limitTo:5">
           <td>{{ $index + 1 }}</td>
           <td>{{ player.name }}</td>
           <td>{{ player.throws }}</td>
           <td>{{ player.strikes }}</td>
           <td>{{ player.balls }}</td>
+          <td>{{ player.strikeouts }}</td>
           <td>{{ player.strike_perc }}</td>
         </tr>
       </tbody>
@@ -110,7 +112,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="player in players | orderBy:'def_per_game':true | limitTo:5">
+        <tr ng-repeat="player in players | orderBy:['-def_per_game', '-defense_plays'] | limitTo:5">
           <td>{{ $index + 1 }}</td>
           <td>{{ player.name }}</td>
           <td>{{ player.games }}</td>

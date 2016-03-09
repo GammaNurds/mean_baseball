@@ -8,7 +8,23 @@ var Schema = mongoose.Schema;
 var playerSchema = new Schema({
     name: { type: String, required: true, unique: true },
     image_url: { type: String },
-    nickname: String,
+    nickname: { type: String },
+    nicknames: { type: Array,  default: [
+            {
+                name: 'John Doe',
+                category: 'default',
+                rank: 0
+            },{
+                name: 'Bambi',
+                category: 'default',
+                rank: 0
+            },{
+                name: 'Ned Flanders',
+                category: 'default',
+                rank: 0
+            }
+        ] 
+    },
 
     games: { type: Number, default: 0 },
     wins: { type: Number, default: 0 },
@@ -19,6 +35,7 @@ var playerSchema = new Schema({
     walks: { type: Number, default: 0 },
     throws: { type: Number, default: 0 },
     strikes: { type: Number, default: 0 },
+    strikeouts: { type: Number, default: 0 },
     balls: { type: Number, default: 0 },
     defense_plays: { type: Number, default: 0 },
 
@@ -60,40 +77,6 @@ module.exports.addPlayer = function(player, callback) {
     Player.create(player, callback);
 };
 
-/*module.exports.calcPlayerFields = function() {
-    Player.find(function(err, players) {
-        for (var key in players) {
-            var player = players[key];
-
-            console.log("calc stats for player: " + player.name);
-            
-            // games played
-            player.games = player.wins + player.losses;  // 0 on first
-
-            // winning percentage
-            player.win_perc = Math.round(player.wins / player.games * 100) / 100;
-            
-            // throws made
-            player.throws = player.strikes + player.balls;
-
-            // strike percentage
-            player.strike_perc = Math.round(player.strikes / player.throws * 100) / 100;
-
-            // hit + homerun percentage
-            player.hit_perc = Math.round((player.hits + player.homeruns) / player.at_bats * 100) / 100;
-
-            // hit + homerun + walks percentage
-            player.base_perc = Math.round((player.hits + player.homeruns + player.walks) / player.at_bats * 100) / 100;
-
-            // defensive plays per game
-            player.def_per_game = Math.round((player.defense_plays / player.games * 100) / 100;
-
-            player.save();
-        }
-    });
-    
-};*/
-
 module.exports.calcFieldsForPlayer = function(id) {
     console.log("looking for player with id: " + id);
     Player.findById(id, function(err, player) {
@@ -124,9 +107,13 @@ module.exports.calcFieldsForPlayer = function(id) {
         // points per at-bat
         player.pts_per_atbat = Math.round((player.hits + (player.homeruns * 2) + player.walks) / player.at_bats * 100) / 100;
 
+        //
+        player.nicknames = getNicknames(player);
+
         player.save();
 
     });
+
     
 };
 
@@ -153,6 +140,7 @@ module.exports.updatePlayer = function(id, player, callback) {
         hits: player.hits,
         homeruns: player.homeruns,
         walks: player.walks,
+        strikeouts: player.strikeouts,
         at_bats: player.at_bats,
         defense_plays: player.defense_plays
     };
@@ -166,3 +154,228 @@ module.exports.deletePlayer = function(id, callback) {
     };
     Player.remove(query, callback);
 };
+
+function getNicknames(player) {
+
+    var nicknames = [{
+            name: 'John Doe',
+            category: 'default',
+            rank: 0
+        },{
+            name: 'Bambi',
+            category: 'default',
+            rank: 0
+        },{
+            name: 'Ned Flanders',
+            category: 'default',
+            rank: 0
+        }
+    ];
+    
+    // determine pitcher_rank
+    var pitcher_rank = 0;
+    if (player.strike_perc >= 0.7) {
+        pitcher_rank = 3;
+    } else if (player.strike_perc >= 0.5) {
+        pitcher_rank = 2;
+    } else if (player.strike_perc >= 0.4) {
+        pitcher_rank = 1;
+    }
+    //console.log(player.strike_perc, pitcher_rank);
+
+    // determine winner rank
+    var winner_rank = 0;
+    if (player.win_perc >= 0.85) {
+        winner_rank = 3;
+    } else if (player.win_perc >= 0.70) {
+        winner_rank = 2;
+    } else if (player.win_perc >= 0.5) {
+        winner_rank = 1;
+    }
+    //console.log(player.win_perc, winner_rank);
+
+    // determine batter_rank
+    var batter_rank = 0;
+    if (player.hit_perc >= 0.5) { 
+        batter_rank = 3;
+    } else if (player.hit_perc >= 0.35) {
+        batter_rank = 2;
+    } else if (player.hit_perc >= 0.25) {
+        batter_rank = 1;
+    }
+    //console.log(player.hit_perc, batter_rank);
+    
+    // determine def_rank
+    var def_rank = 0;
+    if (player.def_per_game >= 3) { 
+        def_rank = 3;
+    } else if (player.def_per_game >= 2) {
+        def_rank = 2;
+    } else if (player.def_per_game >= 1.5) {
+        def_rank = 1;
+    }
+    //console.log(player.hit_perc, batter_rank);
+    
+    // get ultimate_rank
+    var ultimate_rank = 0;
+    if (def_rank === 3) { 
+        ultimate_rank += 1;
+
+    } if (pitcher_rank === 3) { 
+        ultimate_rank += 1;
+    
+    } if (batter_rank === 3) { 
+        ultimate_rank += 1;
+    
+    } if (winner_rank === 3) { 
+        ultimate_rank += 1;
+    } 
+
+
+    // determine games played
+    // nicknames for players with most games
+
+    var nicknames_db = [
+        // batting
+        {
+            name: "Mola Adebisi",
+            category: "batter",
+            rank: 1
+        },{
+            name: "Hardwood",
+            category: "batter",
+            rank: 2
+        },{
+            name: "Thor",
+            category: "batter",
+            rank: 3
+        },{
+            name: "Big Papi",
+            category: "batter",
+            rank: 3
+        },
+
+        // pitching
+        {
+            name: "Average Pitcher",
+            category: "pitcher",
+            rank: 1
+        },{
+            name: "Bullet",
+            category: "pitcher",
+            rank: 2
+        },{
+            name: "Big Pitcher",
+            category: "pitcher",
+            rank: 3
+        },{
+            name: "The Laser Show",
+            category: "pitcher",
+            rank: 3
+        },
+
+        // winning
+        {
+            name: "Cereal Killer",
+            category: "winner",
+            rank: 1
+        },{
+            name: "Prime Time",
+            category: "winner",
+            rank: 2
+        },{
+            name: "Sidewalk Enforcer",
+            category: "winner",
+            rank: 3
+        },{
+            name: "The One And Only",
+            category: "winner",
+            rank: 3
+        },{
+            name: "Mr. Gadget",
+            category: "winner",
+            rank: 3
+        },
+
+        // defense
+        {
+            name: "The Dude",
+            category: "defender",
+            rank: 1
+        },{
+            name: "The Refrigerator",
+            category: "defender",
+            rank: 2
+        },{
+            name: "The China Wall",  // Stonewall
+            category: "defender",
+            rank: 3
+        },{
+            name: "Steel Curtain",
+            category: "defender",
+            rank: 3
+        },
+
+        // ultimate
+        {
+            name: "Big Papi",
+            category: "ultimate",
+            rank: 4
+        },{
+            name: "Megatron",
+            category: "ultimate",
+            rank: 4
+        },{
+            name: "Crash Override",
+            category: "ultimate",
+            rank: 4
+        }
+    ];
+
+    // select by category and rank
+    for (var key in nicknames_db) {
+        var nickname = nicknames_db[key];
+
+        if (player.games > 5) {  // only applies when more than 5 games are player
+            if (nickname.category === "winner") {
+                if (nickname.rank <= winner_rank) {
+                    // add label
+                    nickname.label = " --- Rank" + nickname.rank;// + " Winner";
+                    nicknames.push(nickname);
+                }
+            } else if (nickname.category === "batter") {
+                if (nickname.rank <= batter_rank) {
+                    nickname.label = " --- Rank" + nickname.rank;// + " Hitter";
+                    nicknames.push(nickname);
+                }
+            } else if (nickname.category === "pitcher") {
+                if (nickname.rank <= pitcher_rank) {
+                    nickname.label = " --- Rank" + nickname.rank;// + " Pitcher";
+                    nicknames.push(nickname);
+                }
+            } else if (nickname.category === "defender") {
+                if (nickname.rank <= def_rank) {
+                    nickname.label = " --- Rank" + nickname.rank;// + " Defender";
+                    nicknames.push(nickname);
+                }
+            } else if (nickname.category === "ultimate") {
+                if (ultimate_rank >= 3) {
+                    nickname.label = " --- Rank" + nickname.rank;// + " Defender";
+                    nicknames.push(nickname);
+                } 
+            }
+        }
+    }
+
+    // bonus
+    if (ultimate_rank === 4) {
+        nicknames.push({
+            name: "Nicolas Cage",
+            category: "ultimate",
+            rank: 4
+        });
+    }
+
+
+    return nicknames;
+}

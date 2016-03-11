@@ -268,6 +268,13 @@ var GameClass = function(player1, player2) {
         };
     };
 
+    this.getScore = function() {
+        return {
+            "p1_points": player1.getPoints(),
+            "p2_points": player2.getPoints()
+        };
+    };
+
     this.getPitcher = function() {
         return pitcher;
     };

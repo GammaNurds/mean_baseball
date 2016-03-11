@@ -44,6 +44,32 @@ angular.module('baseballAngularApp')
             player.defense_plays += gamePlayer.getDefensePlays();
             player.strikeouts += gamePlayer.getStrikeouts();
             
+            // add game result to player 1's history
+            var result;
+            if (player.name === winnerName) {
+                result = "win"; 
+            } else {
+                result = "loss";
+            }
+            var opponent;
+            var gameScore = game.getScore();
+            var score;
+            if (player.name === player1.getName()) {  // its player 1
+                opponent = player2.getName();
+                score = gameScore.p1_points + ":" + gameScore.p2_points;
+            } else { // its player 2
+                opponent = player1.getName();
+                score = gameScore.p2_points + ":" + gameScore.p1_points;
+            }
+            console.log(player1.getName() + " -vs - " + player2.getName());
+
+            player.game_history.push({
+                opponent: opponent,
+                result: result,
+                score: score
+
+            });
+            
             // check if p1 is winner or loser
             if (player.name === winnerName) {
                 player.wins += 1;
@@ -157,7 +183,8 @@ angular.module('baseballAngularApp')
   		function addPlay(play) {
   			game.addPlay(play);
   			$scope.stats = game.getStats();  // update stats
-  			if (game.isOver()) {
+  			
+            if (game.isOver()) {
 	  			console.log("game over!");
                 //playSound("win");
 	  			$scope.isOver = game.isOver();

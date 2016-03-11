@@ -1,7 +1,7 @@
 
 <div ng-init="getPlayers()">
     
-  <div class="panel panel-default" ng-repeat="player in players">
+  <div class="panel panel-default" ng-repeat="player in players | orderBy: 'games':true">
     <img src="{{player.image_url}}" width="100" height="200" class="pull-left player-photo" />
     <div class="panel-body panel-player" >
       <ul class="player-info pull-left">

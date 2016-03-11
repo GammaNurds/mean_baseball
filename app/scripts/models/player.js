@@ -45,6 +45,8 @@ var playerSchema = new Schema({
     hit_perc: { type: Number, default: 0 },
     def_per_game: { type: Number, default: 0 },
     pts_per_atbat: { type: Number, default: 0 },
+
+    game_history: { type: Array },
     
     //created_at: Date,
     updated_at: { type: Date, default: Date.now }
@@ -142,7 +144,8 @@ module.exports.updatePlayer = function(id, player, callback) {
         walks: player.walks,
         strikeouts: player.strikeouts,
         at_bats: player.at_bats,
-        defense_plays: player.defense_plays
+        defense_plays: player.defense_plays,
+        game_history: player.game_history
     };
 
     Player.findOneAndUpdate(query, update, callback);
@@ -158,7 +161,7 @@ module.exports.deletePlayer = function(id, callback) {
 function getNicknames(player) {
 
     var nicknames = [{
-            name: 'John Doe',
+            name: 'Häschen',
             category: 'default',
             rank: 0
         },{
@@ -167,6 +170,30 @@ function getNicknames(player) {
             rank: 0
         },{
             name: 'Ned Flanders',
+            category: 'default',
+            rank: 0
+        },{
+            name: 'Milchschnitte',
+            category: 'default',
+            rank: 0
+        },{
+            name: 'Miau',
+            category: 'default',
+            rank: 0
+        },{
+            name: 'Dieter Thomas Heck',
+            category: 'default',
+            rank: 0
+        },{
+            name: 'Schnecke',
+            category: 'default',
+            rank: 0
+        },{
+            name: 'Rookie Bitch',
+            category: 'default',
+            rank: 0
+        },{
+            name: 'Kanonenfutter',
             category: 'default',
             rank: 0
         }
@@ -236,9 +263,15 @@ function getNicknames(player) {
     // nicknames for players with most games
 
     var nicknames_db = [
+        
+
         // batting
         {
             name: "Mola Adebisi",
+            category: "batter",
+            rank: 1
+        },{
+            name: "The Hit Peak",
             category: "batter",
             rank: 1
         },{
@@ -246,28 +279,48 @@ function getNicknames(player) {
             category: "batter",
             rank: 2
         },{
+            name: "Burning Bat",
+            category: "batter",
+            rank: 2
+        },{
+            name: "Light Sabre",
+            category: "batter",
+            rank: 2
+        },{
+            name: "Big Papi",
+            category: "batter",
+            rank: 3
+        },{
             name: "Thor",
             category: "batter",
             rank: 3
         },{
-            name: "Big Papi",
+            name: "Excalibur",
             category: "batter",
             rank: 3
         },
 
         // pitching
         {
-            name: "Average Pitcher",
-            category: "pitcher",
-            rank: 1
-        },{
-            name: "Bullet",
+            name: "Fireball",
             category: "pitcher",
             rank: 2
         },{
-            name: "Big Pitcher",
+            name: "Bullet",
             category: "pitcher",
-            rank: 3
+            rank: 1
+        },{
+            name: "Lightning Ball",
+            category: "pitcher",
+            rank: 1
+        },{
+            name: "The Bat Gadget",
+            category: "pitcher",
+            rank: 2
+        },{
+            name: "Mega Wave",
+            category: "pitcher",
+            rank: 2
         },{
             name: "The Laser Show",
             category: "pitcher",
@@ -283,23 +336,27 @@ function getNicknames(player) {
             name: "Prime Time",
             category: "winner",
             rank: 2
-        },{
+        },/*{
             name: "Sidewalk Enforcer",
             category: "winner",
             rank: 3
-        },{
-            name: "The One And Only",
+        },*/{
+            name: "The Beast",
             category: "winner",
-            rank: 3
+            rank: 2
         },{
-            name: "Mr. Gadget",
+            name: "The Untouchable",
             category: "winner",
             rank: 3
         },
 
         // defense
         {
-            name: "The Dude",
+            name: "Foul Post",
+            category: "defender",
+            rank: 1
+        },{
+            name: "Spoiler Alert",
             category: "defender",
             rank: 1
         },{
@@ -329,7 +386,16 @@ function getNicknames(player) {
             name: "Crash Override",
             category: "ultimate",
             rank: 4
+        },{
+            name: "Thor",
+            category: "ultimate",
+            rank: 4
+        },{
+            name: "The Legend",
+            category: "ultimate",
+            rank: 4
         }
+
     ];
 
     // select by category and rank

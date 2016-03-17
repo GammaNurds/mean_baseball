@@ -63,59 +63,38 @@ angular.module('baseballAngularApp')
 
 	function createChartData() {
 		$scope.data = [];
-		$scope.colours = [];	
-		$scope.colours.push([{
-				fillColor: "rgba(220,0,0,0.2)",
+		$scope.colours = [];
+		var colorList = [
+			"rgba(220,0,0,0.2)",
+			"rgba(0,220,0,0.2)",
+			"rgba(0,0,220,0.2)",
+			"rgba(220,220,0,0.2)",
+			"rgba(0,220,220,0.2)",
+			"rgba(220,0,220,0.2)"
+		];
+
+		for (var i = 0; i < colorList.length; i++) {
+			$scope.colours.push([{
+				fillColor: colorList[i],
 	            strokeColor: "rgba(220,220,220,1)",
 	            pointColor: "rgba(220,220,220,1)",
 	            pointStrokeColor: "#fff",
 	            pointHighlightFill: "#fff",
 	            pointHighlightStroke: "rgba(220,220,220,1)"
 			}]);
-		$scope.colours.push([{
-				fillColor: 'rgba(0,0,220,0.2)',
-	            strokeColor: "rgba(220,220,220,1)",
-	            pointColor: "rgba(220,220,220,1)",
-	            pointStrokeColor: "#fff",
-	            pointHighlightFill: "#fff",
-	            pointHighlightStroke: "rgba(220,220,220,1)"
-			}]);
-		$scope.colours.push([{
-				fillColor: 'rgba(0,220,0,0.2)',
-	    		strokeColor: "rgba(220,220,220,1)",
-	            pointColor: "rgba(220,220,220,1)",
-	            pointStrokeColor: "#fff",
-	            pointHighlightFill: "#fff",
-	            pointHighlightStroke: "rgba(220,220,220,1)"
-			}]);
-		$scope.colours.push([{
-				fillColor: 'rgba(0,220,220,0.2)',
-	    		strokeColor: "rgba(220,220,220,1)",
-	            pointColor: "rgba(220,220,220,1)",
-	            pointStrokeColor: "#fff",
-	            pointHighlightFill: "#fff",
-	            pointHighlightStroke: "rgba(220,220,220,1)"
-			}]);
-		$scope.colours.push([{
-				fillColor: 'rgba(220,220,0,0.2)',
-	    		strokeColor: "rgba(220,220,220,1)",
-	            pointColor: "rgba(220,220,220,1)",
-	            pointStrokeColor: "#fff",
-	            pointHighlightFill: "#fff",
-	            pointHighlightStroke: "rgba(220,220,220,1)"
-			}]);
+		}
 
 		$scope.labels = ["Pitching", "Concentration", "Batting", "Success", "Defense", "Trash Talk"];
 		for (var key in $scope.players) {
 			
-
-			var pitching = $scope.players[key].strike_perc * 100;
-			var concentration = $scope.players[key].base_perc * 100;
-			var batting = $scope.players[key].hit_perc * 100;
-			var success = $scope.players[key].win_perc * 100;
-			var defense = 50;
-			var trashTalk = 100 - ($scope.players[key].win_perc * 100);
-			$scope.data.push([[pitching, concentration, batting, success, defense, trashTalk]]);
+			var pitching = Math.round($scope.players[key].strike_perc * 100);
+			var concentration = Math.round($scope.players[key].base_perc * 100);
+			var batting = Math.round($scope.players[key].hit_perc * 100);
+			var success = Math.round($scope.players[key].win_perc * 100);
+			var defense = $scope.players[key].def_per_game;
+			var trashTalk = Math.round(100 - ($scope.players[key].win_perc * 100));
+			$scope.data[$scope.players[key]._id] = [[pitching, concentration, batting, success, defense, trashTalk]];
+			//console.log($scope.data);
 		}
 	}
 

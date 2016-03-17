@@ -39,5 +39,4 @@ m.controller('DatabaseCtrl', function($scope, $http, $routeParams) {
 			window.location.href = "#/games";
        	});
 	};
-	
 });

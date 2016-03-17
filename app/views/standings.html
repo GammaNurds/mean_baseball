@@ -63,7 +63,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="player in players | orderBy:'hit_perc':true | limitTo:5">
+        <tr ng-repeat="player in players | orderBy:['-homeruns + hits', '-hit_perc'] | limitTo:5">
           <td>{{ $index + 1 }}</td>
           <td>{{ player.name }}</td>
           <td>{{ player.at_bats }}</td>
@@ -88,7 +88,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="player in players | orderBy:'base_perc':true | limitTo:5">
+        <tr ng-repeat="player in players | orderBy:['-hits + homeruns + walks'] | limitTo:5">
           <td>{{ $index + 1 }}</td>
           <td>{{ player.name }}</td>
           <td>{{ player.at_bats }}</td>
@@ -112,7 +112,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="player in players | orderBy:['-def_per_game', '-defense_plays'] | limitTo:5">
+        <tr ng-repeat="player in players | orderBy:['-defense_plays', '-def_per_game'] | limitTo:5">
           <td>{{ $index + 1 }}</td>
           <td>{{ player.name }}</td>
           <td>{{ player.games }}</td>

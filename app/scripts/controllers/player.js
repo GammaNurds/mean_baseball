@@ -70,7 +70,8 @@ angular.module('baseballAngularApp')
 			"rgba(0,0,220,0.2)",
 			"rgba(220,220,0,0.2)",
 			"rgba(0,220,220,0.2)",
-			"rgba(220,0,220,0.2)"
+			"rgba(220,0,220,0.2)",
+			"rgba(120,120,120,0.2)"
 		];
 
 		for (var i = 0; i < colorList.length; i++) {
@@ -91,11 +92,16 @@ angular.module('baseballAngularApp')
 			var concentration = Math.round($scope.players[key].base_perc * 100);
 			var batting = Math.round($scope.players[key].hit_perc * 100);
 			var success = Math.round($scope.players[key].win_perc * 100);
-			var defense = $scope.players[key].def_per_game;
+
+			// percentage (3 DP per game is 100%, 0 DP per game is 0%)
+			var defense = Math.round($scope.players[key].def_per_game / 3.0 * 100);
 			var trashTalk = Math.round(100 - ($scope.players[key].win_perc * 100));
 			$scope.data[$scope.players[key]._id] = [[pitching, concentration, batting, success, defense, trashTalk]];
 			//console.log($scope.data);
 		}
+		$scope.chartOptions = {
+			responsive: true
+		 };
 	}
 
 	function appendCategories(player) {

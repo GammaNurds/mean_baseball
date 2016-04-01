@@ -130,9 +130,11 @@ ul.player-info {
 }
 
 .scoreboard-player {
-  
-  width: 150px;
-  
+  width: 150px; 
+}
+
+.table-avatar {
+  width: 20px;
 }
 
 /* Responsive: Portrait tablets and up */

@@ -14,14 +14,6 @@ var playerSchema = new Schema({
                 name: 'John Doe',
                 category: 'default',
                 rank: 0
-            },{
-                name: 'Bambi',
-                category: 'default',
-                rank: 0
-            },{
-                name: 'Ned Flanders',
-                category: 'default',
-                rank: 0
             }
         ] 
     },
@@ -47,7 +39,12 @@ var playerSchema = new Schema({
     pts_per_atbat: { type: Number, default: 0 },
 
     game_history: { type: Array },
-    
+    opponents: { type: Array },  // calculation requires game_history
+    bitches: { type: Array },  // calculation requires opponents
+
+    win_streak: { type: Number, default: 0 },
+    // TODO: losing streak
+
     //created_at: Date,
     updated_at: { type: Date, default: Date.now }
 });
@@ -111,6 +108,12 @@ module.exports.calcFieldsForPlayer = function(id) {
 
         //
         player.nicknames = getNicknames(player);
+
+        player.opponents = getOpponentsForPlayer(player);
+        
+        player.bitches = getBitchesForPlayer(player);
+
+        player.win_streak = getCurrentWinStreak(player);
 
         player.save();
 
@@ -445,3 +448,128 @@ function getNicknames(player) {
 
     return nicknames;
 }
+
+function getOpponentsForPlayer(player) {
+    // get unique opponents
+    var opponents = [];
+    for (var i = 0; i < player.game_history.length; i++) {
+        var game = player.game_history[i];
+
+        // loop through all known opponents objects
+        // if opponent doesnt exist, create new object
+        var opponentExists = false;
+        for (var j = 0; j < opponents.length; j++) {
+            if (opponents[j].name) {
+                if (opponents[j].name === game.opponent) {
+                    opponentExists = true;
+                    break;
+                }    
+            }
+        }
+
+        // new opponent
+        if (!opponentExists) {
+            opponents.push({
+                "name": game.opponent,
+                "games_against": 1,
+                "wins_against": 0 
+            });
+        } else { // opponent exists, add a game
+            for (var h = 0; h < opponents.length; h++) {
+                if (opponents[h].name) {
+                    if (opponents[h].name === game.opponent) {
+                        opponents[h].games_against += 1;
+                        break;
+                    }    
+                }
+            }
+        }
+
+        // add if win or loss
+        if (game.result === "win") {
+            for (var k = 0; k < opponents.length; k++) {
+                if (opponents[k].name) {
+                    if (opponents[k].name === game.opponent) {
+                        opponents[k].wins_against += 1;
+                        break;
+                    }    
+                }
+            }   
+        }
+
+        // win percentage
+        for (var m = 0; m < opponents.length; m++) {
+            if (opponents[m].name) {
+                if (opponents[m].name === game.opponent) {
+                    
+
+                    opponents[m].win_perc = opponents[m].wins_against / opponents[m].games_against;
+
+                    break;
+                }    
+            }
+        }  
+
+
+    }
+    return opponents;
+}
+
+function getBitchesForPlayer(player) {
+
+    var bitches = [];
+    var opponents = getOpponentsForPlayer(player);
+    for (var i = 0; i < opponents.length; i++) {
+        if (opponents[i].win_perc >= 0.75) {
+            bitches.push(opponents[i].name);
+        }
+    }
+    return bitches;
+}
+
+/**
+ * determine current active winstreak from a player's 
+ * game history
+ */
+function getCurrentWinStreak(player) {
+    var winStreak = 0;
+    
+    for (var i = player.game_history.length - 1; i > -1; --i) {
+        //console.log(i, player.game_history.length);
+        console.log("index:" + i);
+        var game = player.game_history[i];
+
+        if (game.result === "win") {
+            winStreak += 1;  
+        } else {
+            break;
+        }
+    }
+    return winStreak;
+}
+
+/*function getGameHistoryStats(player) {
+    var opponents = getOpponentsForPlayer(player);
+    
+    // count games against opponent
+    for (var i = 0; i < player.game_history.length; i++) {
+        // if win, 
+    }
+
+}
+
+function getBitches(player) {
+    var bitches = [];
+
+    // get this player's opponents
+    var opponents = getOpponentsForPlayer(player);
+
+    // loop over all games to find enemy against this player has
+    // >= 0.8 win percentage
+
+    for (var i = 0; i < player.game_history.length; i++) {
+
+    }
+
+    return bitches;
+}*/

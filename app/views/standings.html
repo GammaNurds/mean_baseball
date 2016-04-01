@@ -10,16 +10,24 @@
   				<th>Wins</th>
   				<th>Losses</th>
           <th>Win%</th>
+          <th>Streak</th>
   			</tr>
   		</thead>
   		<tbody>
   			<tr ng-repeat="player in players | orderBy:['-wins', '-win_perc']">
           <td>{{ $index + 1 }}</td>
-    			<td>{{ player.name }} <span ng-show="player.nickname">"{{ player.nickname }}"</span></td>
+    			<td>
+            <img class="table-avatar" src="{{ player.image_url }}" />
+            {{ player.name }} 
+            <span ng-show="player.nickname">
+              "{{ player.nickname }}"
+            </span>
+          </td>
     			<td>{{ player.games }}</td>
     			<td>{{ player.wins }}</td>
           <td>{{ player.losses }}</td>
 		      <td>{{ player.win_perc }}</td>
+          <td>{{ player.win_streak }}</td>
   			</tr>
   		</tbody>
 	</table>
@@ -140,5 +148,41 @@
           <td>{{ player.losses }}</td>
         </tr>
       </tbody>
+  </table>
+
+  <h3>Hottest Players</h3>
+  <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Active Winning Streak</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="player in players | orderBy:'win_streak':true | limitTo:5">
+          <td>{{ $index + 1 }}</td>
+          <td>{{ player.name }}</td>
+          <td>{{ player.win_streak }}</td>
+        </tr>
+      </tbody>
+  </table>
+
+  <h3>Top 5 PIMPs</h3>
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Pimp</th>
+        <th>#</th>
+        <th>Bitches</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="player in players | orderBy:'bitches.length':true | limitTo:5">
+        <td ng-show="player.bitches.length > 0">{{ player.name }}</td>
+        <td ng-show="player.bitches.length > 0">{{ player.bitches.length }}</td>
+        <td ng-show="player.bitches.length > 0"><span ng-repeat="bitch in player.bitches">{{ bitch }} </span></td>
+      </tr>
+    </tbody>
   </table>
 </div>

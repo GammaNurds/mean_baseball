@@ -9,12 +9,19 @@
         <li class="italics">{{player.nickname}}</li>
         <li>Games played: {{player.games}}</li>
         <li>Win%: {{player.win_perc}}</li>
+        <li>Current win-streak: {{player.win_streak}}</li>
         <li>Throws: {{player.throws}}</li>
         <li>Strike%: {{player.strike_perc}}</li>
         <li>At Bats: {{player.at_bats}}</li>
         <li>Hit%: {{player.hit_perc}}</li>
         <li>Walks: {{player.walks}}</li>
         <li>Base%: {{player.base_perc}}</li>
+        <li ng-show="player.bitches.length > 0">
+          Bitches:
+          <ul>
+            <li span ng-repeat="bitch in player.bitches">{{ bitch }}</li>
+          </ul>
+        </li>
         <li><a href="#/players/edit/{{player._id}}">Edit</a></li>
         <!--<li><a href="#" ng-click="onDeleteClick(player._id)">Delete</a><li>-->
 
@@ -22,7 +29,7 @@
 
       <div ng-init="" class="pull-right"> 
         <canvas class="chart chart-radar"
-          chart-data="data[player._id]" chart-labels="labels" chart-colours="colours[$index]">
+          chart-data="data[player._id]" chart-labels="labels" chart-colours="colours[$index]" chart-options="chartOptions">
         </canvas> 
       </div> 
 

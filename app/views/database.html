@@ -12,7 +12,7 @@
   			</tr>
   		</thead>
   		<tbody>
-  			<tr ng-repeat="game in games | orderBy:'updated_at'">
+  			<tr ng-repeat="game in games | orderBy:'updated_at':false">
     			<td>{{ $index + 1 }}</td> 
     			<td>{{ game.player1 }}</td>
     			<td>{{ game.player2 }}</td>

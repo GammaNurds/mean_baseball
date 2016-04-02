@@ -8,31 +8,21 @@
  * Controller of the baseballAngularApp
  */
 angular.module('baseballAngularApp')
-	.controller('MainCtrl', function ($scope, $http, $routeParams) {
+    .controller('MainCtrl', function ($scope, $http, $routeParams, $PlayersService, $GamesService) {
 
-
-        console.log("trying to play sound!");
-        /*var sound = new Howl({
-            src: ['.../sounds/homerun3.mp3'],
-            autoplay: true,
-            loop: true,
-            onend: function() {
-                console.log('Finished!');
-            }
-        });
-        console.log(sound);
-        sound.play();
-
-        playSound("strike");
-        */
-		
-		$scope.activeGame = false;
-		var player1;
-		var player2;
-		var game;
+        playIntro();
+        console.log("load mainctrl");
+        $scope.players = $PlayersService.query();
+        $scope.activeGame = false;
+        var player1;
+        var player2;
+        var game;
 
         var p1Obj;
         var p2Obj;
+
+        // empty bets array that will hold the players winner choices
+        $scope.bets = {};
 
         function updatePlayer(player, gamePlayer, winnerName) {
             player.strikes += gamePlayer.getAllStrikes();
@@ -61,7 +51,7 @@ angular.module('baseballAngularApp')
                 opponent = player1.getName();
                 score = gameScore.p2_points + ":" + gameScore.p1_points;
             }
-            console.log(player1.getName() + " -vs - " + player2.getName());
+            //console.log(player1.getName() + " -vs - " + player2.getName());
 
             player.game_history.push({
                 opponent: opponent,
@@ -76,7 +66,7 @@ angular.module('baseballAngularApp')
             } else {
                 player.losses += 1;
             }
-            console.log(player);
+
             // send p1
             $http.put("/api/players/" + player._id, player).success(function() {
                 console.log("success updating player");
@@ -90,13 +80,56 @@ angular.module('baseballAngularApp')
             //var at_bats = game.getAtBats();
 
             // send game to db
-            $http.post("/api/games", JSON).success(function(response) {
+            $GamesService.save(JSON, function() {
                 console.log("posting game successfull!");
                 $scope.success = true;
             });
 
             updatePlayer(p1Obj, player1, winner);
             updatePlayer(p2Obj, player2, winner);
+        }
+
+        function saveBets() {
+
+            // check odds -> 1 point if winner has more wins than lose
+            // 2 points if winner has lower points (lower ranked)
+            var winner = getWinner();
+            var loser = getLoser();
+            var points;
+            if (winner.wins >= loser.wins) {
+                points = 1;
+            } else {
+                points = 2;
+            }
+
+            var betWinners = [];
+            for (var playerName in $scope.bets) {
+                var choice = $scope.bets[playerName];
+                if (choice === game.getWinnerName()) {  //player picked winner correctly
+                    //console.log(playerName + " has won it's bet! (" + choice + ")");
+                    betWinners.push({
+                        name: playerName,
+                        points: points
+                    });
+                }
+            }
+            // assign to scope for use in my-gameover directive
+            $scope.betWinners = betWinners;
+            
+            // process winners
+            for (var key in betWinners) { 
+                var playerName = betWinners[key].name;
+                //console.log(betWinners[i]);
+
+                // add point for winner
+                var player = getPlayerByName(playerName);
+                player.bet_points += 1;
+
+                // update player
+                $PlayersService.update({ id: player._id }, player, function() {
+                    console.log("updating bets of players successfull");
+                });
+            }
         }
 
         function getPlayerByName(name) {
@@ -109,39 +142,6 @@ angular.module('baseballAngularApp')
             return playerObj;
         }
 
-  		//$scope.winner = game.isOver();
-        //$scope.players = $PlayersService.players;
-        $scope.getPlayers = function() {
-            $http.get("/api/players/").success(function(response) {
-                $scope.players = response;
-            });
-        };
-
-  		// handler for ball button
-  		$scope.onBallClick = function() {
-  			addPlay("ball");
-  		};
-
-  		// handler for ball button
-  		$scope.onStrikeClick = function() {
-  			addPlay("strike");
-  		};
-
-        // handler for defense button
-        $scope.onDefensePlayClick = function() {
-            addPlay("defensePlay");
-        };
-
-  		// handler for ball button
-  		$scope.onHitClick = function() {
-  			addPlay("hit");
-  		};
-
-  		 // handler for ball button
-  		$scope.onHomerunClick = function() {
-  			addPlay("homerun");
-  		};
-
         /**
          * set allSelected to true when all needed options are selected
          */
@@ -153,7 +153,7 @@ angular.module('baseballAngularApp')
         };
 
         $scope.onStartGameClick = function() {
-            console.log("start game!");
+            //console.log("start game!");
             $scope.activeGame = true;
             player1 = new PlayerClass($scope.playerName1);
             player2 = new PlayerClass($scope.playerName2);
@@ -170,27 +170,72 @@ angular.module('baseballAngularApp')
             $scope.p1 = player1.getName();
             $scope.p2 = player2.getName();
             $scope.stats = game.getStats();
+
+            //assignAward(p1Obj);
         };
 
         $scope.getWinner = function() {
             $scope.winner = game.getWinnerName();
         };
 
-        $scope.playIntro = function() {
+        // assign awards once
+        // select player 1 to assign him an award
+        function assignAward(player) {
+            console.log("assign award to " + player.name);
+            console.log(player._id, player.awards);
+            player.awards.push({'name': 'Season 3 Champion', 'type': 'season'});
+            $PlayersService.update({ id: player._id }, player, function() {
+                console.log("updating award successfull");
+            });
+        } 
+
+        /** 
+         * game has to be over. returns entire player object
+         */
+        function getLoser() {
+            //if game.isOver()
+            var loser;
+            if (p1Obj.name !== game.getWinnerName()) {
+                loser = p1Obj;
+            } else {
+                loser = p2Obj;
+            }
+            return loser;
+        }
+
+        /** 
+         * game has to be over. returns entire player object
+         */
+        function getWinner() {
+            //if game.isOver()
+            var winner;
+            if (p1Obj.name === game.getWinnerName()) {
+                winner = p1Obj;
+            } else {
+                winner = p2Obj;
+            }
+            return winner;
+        }
+
+        function playIntro() {
             playSound("intro");
-        };
-  		// this function gets run on every play
-  		function addPlay(play) {
-  			game.addPlay(play);
-  			$scope.stats = game.getStats();  // update stats
-  			
+        }
+
+        // this function gets run on every play
+        $scope.addPlay = function(play) {
+            game.addPlay(play);
+            $scope.stats = game.getStats();  // update stats
+            
             if (game.isOver()) {
-	  			console.log("game over!");
+                console.log("game over!");
                 //playSound("win");
-	  			$scope.isOver = game.isOver();
+                $scope.isOver = game.isOver();
                 $scope.winner = game.getWinnerName();
+                $scope.activeGame = false;
                 saveToDatabase();
-                window.location.href = "#/gameover"; 
-	  		}
-  		}
-	});
+
+                saveBets();
+                //window.location.href = "#/gameover"; 
+            }
+        };
+    });

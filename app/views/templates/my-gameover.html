@@ -1,0 +1,18 @@
+<h1>GAME OVER!</h1>
+<strong>{{winner}}</strong> won!
+
+<p ng-show="betWinners">
+  The following players have won their bets:
+  <ul> 
+    <li ng-repeat="betWinner in betWinners">
+      {{ betWinner.name }}
+      <span ng-show="betWinner.points===2">
+        <strong>+1</strong>
+        <span class="bonus-text">+1 Bonus</span>
+      </span>
+      <span ng-show="betWinner.points===1">
+        <strong>+1</strong>
+      </span>
+    </li>
+  </ul>
+</p>

@@ -45,6 +45,13 @@ var playerSchema = new Schema({
     win_streak: { type: Number, default: 0 },
     // TODO: losing streak
 
+    // variables for betting
+    // bet points hold the total number of winning bets
+    // you'll get one point per won bet
+    bet_points: { type: Number, default: 0 },
+
+    awards: { type: Array },
+
     //created_at: Date,
     updated_at: { type: Date, default: Date.now }
 });
@@ -148,7 +155,9 @@ module.exports.updatePlayer = function(id, player, callback) {
         strikeouts: player.strikeouts,
         at_bats: player.at_bats,
         defense_plays: player.defense_plays,
-        game_history: player.game_history
+        game_history: player.game_history,
+        bet_points: player.bet_points,
+        awards: player.awards
     };
 
     Player.findOneAndUpdate(query, update, callback);

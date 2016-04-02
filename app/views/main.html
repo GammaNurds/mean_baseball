@@ -1,87 +1,14 @@
 <!-- select player area -->
-<div ng-init="getPlayers()" ng-show="!activeGame">
-  <p ng-init="playIntro()">
-    <h3>Player 1</h3>
-    <select class="form-control" ng-model="playerName1">
-      <option value="" disabled selected>Select player</option>
-      <option ng-repeat="player in players">{{player.name}}</option>
-    </select>
-
-    <h3>Player 2</h3>
-    <select class="form-control" ng-model="playerName2">
-      <option value="" disabled selected>Select player</option>
-      <option ng-repeat="player in players">{{player.name}}</option>
-    </select>
-
-    <!--<h3>Mode</h3>
-    <select class="form-control" ng-model="gameMode">
-      <option value="" disabled selected>Select Game Mode</option>
-      <option>Ranked Match</option>
-      <option>Practice</option>
-      <option disabled>Homerun Derby</option>
-    </select>-->
-  </p>
-  <p>
-    <button type="button" class="btn btn-default btn-lg" ng-click="onStartGameClick()">Start Game</button>
-    <!--<button ng-init="checkSelection()" ng-show="allSelected" type="button" class="btn btn-default btn-lg" ng-click="onStartGameClick()">Start Game</button>-->
-  </p>
+<div ng-show="!activeGame && !isOver">
+  <my-playerselection></my-playerselection>
 </div>
 
-<!-- game area -->
 <div ng-show="activeGame"> <!-- maybe add .. startGame() -->
-  <!-- button area -->
-  <div>
-    <!-- disable buttons when $scope.isOver is not false -->
-  	<p><button type="button" class="btn btn-default btn-lg { disabled: isOver }" ng-click="onBallClick()">Ball</button></p>
-    <p><button type="button" class="btn btn-default btn-lg" ng-click="onStrikeClick()">Strike</button></p>
-  	<p><button type="button" class="btn btn-default btn-lg" ng-click="onDefensePlayClick()">
-      Defensive Play</button></p>
-  	<p><button type="button" class="btn btn-default btn-lg" ng-click="onHitClick()">Hit</button></p>
-  	<p><button type="button" class="btn btn-default btn-lg" ng-click="onHomerunClick()">Homerun</button></p>
-  </div>
-
-
-
-  <!-- current game stats -->
-  <div class="panel scoreboard">
-
-
-    <span class="scoreboard-label">Pitcher</span>
-    <span class="scoreboard-letter scoreboard-player">{{stats.pitcher}}</span>
-    <!--<span class="scoreboard-label">At Bat</span>
-    <span class="scoreboard-letter">{{stats.at_bats}}</span>--> 
-    <span class="scoreboard-label">Ball</span>
-    <span class="scoreboard-letter">{{stats.balls}}</span> 
-    <span class="scoreboard-label">Strike</span>
-    <span class="scoreboard-letter">{{stats.strikes}}</span>
-    
-    
-
-    
-    <!--<span class="scoreboard-label">Guest</span>-->
-    <span class="scoreboard-player scoreboard-label">{{p2}}</span>
-    <span class="scoreboard-letter right">{{stats.p2_points}}</span>
-    
-
-    
-    <!--<span class="scoreboard-label">Home</span>-->
-    <span class="scoreboard-player scoreboard-label">{{p1}}</span>
-    <span class="scoreboard-letter right">{{stats.p1_points}}</span>
-    
-  </div>
-
-
-
-  <!-- only shows when $scope.winner is not false -> this is set dynamically in controller -->
-  <!-- ng-if also works -->
-  <div ng-show="isOver">
-    <h1>GAME OVER!</h1>
-    <strong>{{winner}}</strong> won!
-  </div>
-
-  <!--<div ng-show="success" class="alert alert-success alert-dismissible fade in" role="alert"> 
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <strong>Success!</strong> You're looking good.
-  </div>-->
-
+  <my-gameinterface></my-gameinterface>
+  <my-scoreboard></my-scoreboard>
 </div>
+
+<div ng-show="isOver">
+  <my-gameover></my-gameover>
+</div>
+

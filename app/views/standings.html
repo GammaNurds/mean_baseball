@@ -22,6 +22,11 @@
             <span ng-show="player.nickname">
               "{{ player.nickname }}"
             </span>
+            <span ng-repeat="award in player.awards">
+              <img src="/images/season1.png" class="table-avatar" ng-show="award.name==='Season 1 Champion'" title="Season 1 Champion">
+              <img src="/images/season2.png" class="table-avatar" ng-show="award.name==='Season 2 Champion'" title="Season 2 Champion">
+              <img src="/images/season3.png" class="table-avatar" ng-show="award.name==='Season 3 Champion'" title="Season 3 Champion">
+            </span>
           </td>
     			<td>{{ player.games }}</td>
     			<td>{{ player.wins }}</td>
@@ -130,7 +135,7 @@
       </tbody>
   </table>
 
-  <h3>Top 5 Trash Talker</h3>
+  <!--<h3>Top 5 Trash Talker</h3>
   <table class="table table-condensed">
       <thead>
         <tr>
@@ -148,7 +153,7 @@
           <td>{{ player.losses }}</td>
         </tr>
       </tbody>
-  </table>
+  </table>-->
 
   <h3>Hottest Players</h3>
   <table class="table table-condensed">
@@ -160,15 +165,33 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="player in players | orderBy:'win_streak':true | limitTo:5">
+        <tr ng-repeat="player in players | orderBy:'win_streak':true | limitTo:3">
           <td>{{ $index + 1 }}</td>
           <td>{{ player.name }}</td>
           <td>{{ player.win_streak }}</td>
         </tr>
       </tbody>
   </table>
+  
+  <h3>Top Gamblers</h3>
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Player</th>
+        <th>Points Earned</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="player in players | orderBy:'bet_points':true | limitTo:5">
+        <td>{{ $index + 1 }}</td>
+        <td>{{ player.name }}</td>
+        <td>{{ player.bet_points }}</td>
+      </tr>
+    </tbody>
+  </table>
 
-  <h3>Top 5 PIMPs</h3>
+  <h3>Top PIMPs</h3>
   <table class="table table-condensed">
     <thead>
       <tr>
@@ -178,11 +201,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="player in players | orderBy:'bitches.length':true | limitTo:5">
+      <tr ng-repeat="player in players | orderBy:'bitches.length':true | limitTo:3">
         <td ng-show="player.bitches.length > 0">{{ player.name }}</td>
         <td ng-show="player.bitches.length > 0">{{ player.bitches.length }}</td>
         <td ng-show="player.bitches.length > 0"><span ng-repeat="bitch in player.bitches">{{ bitch }} </span></td>
       </tr>
     </tbody>
   </table>
+
 </div>

@@ -2,8 +2,20 @@
 <div ng-init="getPlayers()">
     
   <div class="panel panel-default" ng-repeat="player in players | orderBy: 'games':true">
-    <img src="{{player.image_url}}" width="100" height="200" class="pull-left player-photo" />
-    <div class="panel-body panel-player" >
+    <!--<div class="panel-heading"></div>-->
+    <div class="panel-body panel-player">
+
+      <!-- awards -->
+      <span ng-repeat="award in player.awards" class="pull-left">
+        <!-- award season 1 -->
+        <img src="/images/season1.png" class="award-icon" ng-show="award.name==='Season 1 Champion'" title="Season 1 Champion">
+        <!-- award season 2 -->
+        <img src="/images/season2.png" class="award-icon" ng-show="award.name==='Season 2 Champion'" title="Season 2 Champion">
+        <!-- award season 3 -->
+        <img src="/images/season3.png" class="award-icon" ng-show="award.name==='Season 3 Champion'" title="Season 3 Champion">
+      </span>
+
+      <img src="{{player.image_url}}" width="100" height="200" class="pull-left player-photo" />
       <ul class="player-info pull-left">
         <li class="bold">{{player.name}}</li>
         <li class="italics">{{player.nickname}}</li>

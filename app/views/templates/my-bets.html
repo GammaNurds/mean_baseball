@@ -1,0 +1,24 @@
+
+<!-- activate button once two players have been selected. hide button once it's clicked. -->
+<button class="btn btn-default" ng-init="showBets=false" ng-hide="showBets" ng-click="showBets=true" ng-disabled="!playerName1 || !playerName2">Place Bets!</button>
+
+<!-- only show if button was clicked -->
+<div class="form-horizontal" ng-show="showBets">
+  <!-- don't let currently active players pick a winner -->
+  <div class="form-group " ng-repeat="player in players" ng-show="(player.name !== playerName1) && (player.name !== playerName2)">
+    <label for "betPlayer1" class="col-sm-4 control-label">{{player.name}}'s Pick</label>
+    <div class="col-sm-5">
+      <!-- attach selected winner to bets.playername and use these choices later to assign bet_points -->
+      <select class="form-control" ng-model="bets[player.name]">
+
+        <!-- only currently selected players are available as options -->
+        <option value="" disabled selected>Select Winner</option>
+        <option>{{ playerName1 }}</option>
+        <option>{{ playerName2 }}</option>
+      </select>
+    </div>
+ 
+  </div>
+</div>
+
+<!--<select ng-model="Answers[question.Name]" ng-options="option for option in question.Options">-->

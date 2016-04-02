@@ -1,0 +1,21 @@
+<p>
+    <h3>Player 1</h3>
+    <select class="form-control" ng-model="playerName1">
+      <option value="" disabled selected>Select player</option>
+      <!-- dont show player if already selected as player2 -->
+      <option ng-repeat="player in players" ng-hide="playerName2===player.name">{{player.name}}</option>
+    </select>
+
+    <h3>Player 2</h3>
+    <select class="form-control" ng-model="playerName2">
+      <option value="" disabled selected>Select player</option>
+      <!-- dont show player if already selected as player1 -->
+      <option ng-repeat="player in players" ng-hide="playerName1===player.name">{{player.name}}</option>
+    </select>
+  </p>
+
+  <my-bets></my-bets>
+
+  <p>
+    <button type="button" class="btn btn-default btn-lg" ng-disabled="!playerName1 || !playerName2" ng-click="onStartGameClick()">Start Game</button>
+  </p>

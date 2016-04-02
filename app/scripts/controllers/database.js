@@ -8,16 +8,17 @@ var m = angular.module('baseballAngularApp');
  * # MainCtrl
  * Controller of the baseballAngularApp
  */
-m.controller('DatabaseCtrl', function($scope, $http, $routeParams) {
+m.controller('DatabaseCtrl', function($scope, $http, $routeParams, $GamesService) {
 	console.log("DatabaseCtrl loaded...");
 
 	/**
 	 * get games using api
 	 */
 	$scope.getGames = function() {
-		$http.get("/api/games").success(function(response) {
+		$scope.games = $GamesService.query();
+		/*$http.get("/api/games").success(function(response) {
 			$scope.games = response;
-       	});
+       	});*/
 	};
 
 	/**

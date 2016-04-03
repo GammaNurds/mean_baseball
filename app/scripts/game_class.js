@@ -166,7 +166,6 @@ var GameClass = function(player1, player2) {
         this.savePlay(play);
 
         if (play === "strike") {
-            playSound("strike");
             this.getPitcher().addStrike();
             // strikeout
             if (this.getPitcher().getStrikes() >= MAXSTRIKES) {
@@ -185,7 +184,6 @@ var GameClass = function(player1, player2) {
             }
         
         } else if (play === "ball") {
-            //playSound("strike");
             this.getPitcher().addBall();
             // walk
             if (this.getPitcher().getBalls() >= MAXBALLS) {
@@ -196,14 +194,12 @@ var GameClass = function(player1, player2) {
             }
         
         } else if (play === "hit") {
-            playSound("hit");
             this.getBatter().addHit();
             this.getBatter().addPoints(1);
             //this.setPositions();
             newAtBat = true;
 
         } else if (play === "homerun") {
-            playSound("homerun");
             this.getBatter().addHomerun();
             this.getBatter().addPoints(2);
             //this.setPositions();

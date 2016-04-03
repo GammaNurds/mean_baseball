@@ -1,7 +1,7 @@
 <h1>GAME OVER!</h1>
 <strong>{{winner}}</strong> won!
 
-<p ng-show="betWinners">
+<p ng-show="betWinners.length > 0">
   The following players have won their bets:
   <ul> 
     <li ng-repeat="betWinner in betWinners">

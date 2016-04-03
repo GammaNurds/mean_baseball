@@ -8,10 +8,11 @@
  * Controller of the baseballAngularApp
  */
 angular.module('baseballAngularApp')
-    .controller('MainCtrl', function ($scope, $http, $routeParams, $PlayersService, $GamesService) {
-
-        playIntro();
+    .controller('MainCtrl', function ($scope, $http, $routeParams, $PlayersService, $GamesService, $SoundService) {
         console.log("load mainctrl");
+
+        $SoundService.playSound("intro");
+        
         $scope.players = $PlayersService.query();
         $scope.activeGame = false;
         var player1;
@@ -217,13 +218,11 @@ angular.module('baseballAngularApp')
             return winner;
         }
 
-        function playIntro() {
-            playSound("intro");
-        }
-
         // this function gets run on every play
         $scope.addPlay = function(play) {
             game.addPlay(play);
+            $SoundService.playSound(play);
+            
             $scope.stats = game.getStats();  // update stats
             
             if (game.isOver()) {

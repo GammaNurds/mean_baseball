@@ -184,7 +184,7 @@ angular.module('baseballAngularApp')
         function assignAward(player) {
             console.log("assign award to " + player.name);
             console.log(player._id, player.awards);
-            player.awards.push({'name': 'Season 3 Champion', 'type': 'season'});
+            player.awards.push({'name': 'Season 1 Champion', 'type': 'season'});
             $PlayersService.update({ id: player._id }, player, function() {
                 console.log("updating award successfull");
             });
